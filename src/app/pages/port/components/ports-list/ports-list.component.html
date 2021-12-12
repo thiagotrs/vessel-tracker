@@ -1,0 +1,10 @@
+<app-list-group>
+  <app-list-item *ngFor="let port of ports">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">⚓ {{port.name}}</h5>
+    </div>
+    <p class="mb-1">{{port.location.city + ', ' + port.location.country}}</p>
+    <div class="fw-bold fst-italic">Capacity: {{port.capacity}}</div>
+    <small class="text-muted" *ngIf="port.location.point">{{port.location.point}}</small>
+  </app-list-item>
+</app-list-group>

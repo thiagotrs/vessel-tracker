@@ -1,0 +1,13 @@
+<app-list-group>
+  <app-list-item>
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">📍 {{stop.port.name}}</h5>
+        <div class="d-flex">
+          <span app-badge pill color="success">{{stop.dateIn | date:'shortDate'}}</span>
+      </div>
+    </div>
+    <p class="mb-1">{{stop.port.location.city + ', ' + stop.port.location.country}}</p>
+    <div class="fw-bold fst-italic">Capacity: {{stop.port.capacity}}</div>
+    <small class="text-muted" *ngIf="stop.port.location.point">{{stop.port.location.point}}</small>
+  </app-list-item>
+</app-list-group>

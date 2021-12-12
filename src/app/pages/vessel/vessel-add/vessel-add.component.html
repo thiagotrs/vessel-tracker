@@ -1,0 +1,42 @@
+<h1>🚢 New Vessel</h1>
+
+<div class="border p-3 my-4">
+  <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="w-100">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name:</label>
+      <input class="form-control form-control-lg" type="text" id="name" name="name" required aria-describedby="nameHelp" ngModel #name="ngModel">
+      <div id="nameHelp" class="text-danger" *ngIf="name.invalid && (name.dirty || name.touched)">Name is required</div>
+    </div>
+    <div class="mb-3">
+      <label for="ownership" class="form-label">Ownership:</label>
+      <input class="form-control form-control-lg" type="text" id="ownership" name="ownership" required aria-describedby="ownershipHelp" ngModel #ownership="ngModel">
+      <div id="ownershipHelp" class="text-danger" *ngIf="ownership.invalid && (ownership.dirty || ownership.touched)">Ownership is required</div>
+    </div>
+    <div class="mb-3">
+      <p>Status: </p>
+      <div class="form-check" *ngFor="let stat of status">
+        <input class="form-check-input" type="radio" name="status" [id]="stat" [checked]="stat === 'Parked'" disabled>
+        <label class="form-check-label" [for]="stat">{{stat}}</label>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="year" class="form-label">Year:</label>
+      <input class="form-control form-control-lg" type="number" min="1900" max="2100" id="year" name="year" required aria-describedby="yearHelp" ngModel #year="ngModel">
+      <div id="yearHelp" class="text-danger" *ngIf="year.invalid && (year.dirty || year.touched)">Year is required</div>
+    </div>
+    <div class="mb-3">
+      <label for="port" class="form-label">Port:</label>
+      <select name="port" id="port" class="form-select form-select-lg" ngModel #port="ngModel" required aria-describedby="portHelp">
+        <option value="" selected disabled>Select Port</option>
+        <option *ngFor="let port of ports" [value]="port.id">
+          {{port.name + ' (' + port.location.city + ', ' + port.location.country + ')'}}
+        </option>
+      </select>
+      <div id="portHelp" class="text-danger" *ngIf="port.invalid && (port.dirty || port.touched)">Port is required</div>
+    </div>
+    <div class="d-grid gap-2 d-md-flex">
+      <button type="submit" class="btn btn-lg btn-primary" [disabled]="myForm.invalid">Save</button>
+      <button type="button" (click)="clear(myForm)" class="btn btn-lg btn-outline-primary">Clear</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,15 @@
+<form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class=" mb-3">
+  <app-alert type="warning" [message]="alertMessage" (onClose)="closeAlert(); loginForm.resetForm()" *ngIf="alertMessage"></app-alert>
+  <div class="mb-2">
+    <label class="form-label fs-5" for="email">Email:</label>
+    <input type="email" class="form-control p-3" id="email" name="email" placeholder="name@example.com" required ngModel #email="ngModel" aria-describedby="emailHelp">
+    <div id="emailHelp" class="text-danger" *ngIf="email.invalid && (email.dirty || email.touched)">Email is required</div>
+  </div>
+  <div class="mb-2">
+    <label class="form-label fs-5" for="pass">Password:</label>
+    <input type="password" class="form-control p-3" id="pass" name="pass" placeholder="Password" required ngModel #pass="ngModel" aria-describedby="passHelp">
+    <div id="passHelp" class="text-danger" *ngIf="pass.invalid && (pass.dirty || pass.touched)">Password is required</div>
+  </div>
+  <button class="w-100 btn btn-lg btn-dark" type="submit" [disabled]="loginForm.invalid">Log in</button>
+</form>
+<p class="fs-4 fw-bold">👉 <a routerLink="/auth/signup" class="link-dark">Sign up</a></p>

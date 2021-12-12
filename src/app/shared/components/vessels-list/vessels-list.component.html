@@ -1,0 +1,10 @@
+<app-list-group>
+  <a app-list-item-action *ngFor="let vessel of vessels" [routerLink]="vessel.id">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">⚓ {{vessel.name}}</h5>
+      <span app-badge [color]="vessel.status === 'Sailing' ? 'primary' : 'danger'">{{vessel.status}}</span>
+    </div>
+    <p class="mb-1">{{vessel.ownership}}</p>
+    <div class="fw-bold fst-italic">Last Port: {{vessel.stops | lastPortFilter}}</div>
+  </a>
+</app-list-group>

@@ -1,0 +1,9 @@
+<div class="alert alert-dismissible" 
+  role="alert" 
+  [class.alert-warning]="type === 'warning'"
+  [class.alert-success]="type === 'success'"
+  [class.alert-danger]="type === 'danger'"
+> 
+  {{message}}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="close()"></button>
+</div>

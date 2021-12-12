@@ -1,0 +1,37 @@
+<app-header></app-header>
+<main class="my-4">
+  <div class="container">
+    <h1>Dashboard</h1>
+
+    <app-hero *ngIf="user$ | async as user">
+      <h1>🧍 {{ user?.name }}</h1>
+      <p class="lead">{{ user?.email }}</p>
+    </app-hero>
+
+    <div class="row">
+      <div class="col">
+        <app-hero>
+          <h1 class="display-1">{{(trackedVessels$| async)?.length || 0}} 🚢</h1>
+          <a [routerLink]="['/vessel']" app-button color="dark" size="large" outline>Track Vessels</a>
+        </app-hero>
+      </div>
+      <div class="col">
+        <app-hero>
+          <h1 class="display-1">{{(trackedPorts$ | async)?.length || 0}} ⚓</h1>
+          <a [routerLink]="['/port']" app-button color="dark" size="large" outline>Track Ports</a>
+        </app-hero>
+      </div>
+    </div>
+
+    <app-hero>
+      <div class="row">
+        <div class="col">
+          <h1 class="display-4">🗺️ Route Planning</h1>
+        </div>
+        <div class="col">
+          <a [routerLink]="['/vessel']" app-button color="dark" size="large" outline class="px-4 py-3 fs-4">Plan Routes</a>
+        </div>
+      </div>
+    </app-hero>
+  </div>
+</main>
