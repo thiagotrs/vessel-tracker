@@ -8,8 +8,8 @@ export interface IAuth {
 }
 
 export const authInitialState: IAuth = {
-    user: null,
-    isAuth: false,
+    user: { name: "Admin", email: "admin@admin.com" },
+    isAuth: true,
     error: null
 }
 

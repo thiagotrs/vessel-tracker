@@ -29,9 +29,7 @@ export class PortAddComponent implements OnInit {
       capacity: myForm.form.value.capacity 
     } as Port
     
-    this.portService.createPort(port).subscribe({
-      complete: () => this.router.navigate(['/port'])
-    })
+    this.portService.createPort(port)
   }
 
   clear(myForm:NgForm) {

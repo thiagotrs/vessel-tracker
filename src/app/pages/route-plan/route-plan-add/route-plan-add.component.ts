@@ -61,7 +61,7 @@ export class RoutePlanAddComponent implements OnInit, OnDestroy, CanComponentDea
       }
     });
 
-    this.portsSub = this.portService.getPorts().subscribe(ports => {this.ports = ports})
+    this.portsSub = this.portService.ports$.subscribe(ports => {this.ports = ports})
   }
 
   save() {

@@ -1,33 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import { Port } from 'src/app/core/models/port.model';
 import { Vessel } from 'src/app/core/models/vessel.model';
 import { environment } from '../../../environments/environment';
+import { addPort, loadPorts, selectPorts, selectPortsError } from '../store/port.state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PortService {
 
-  private _ports$ = new BehaviorSubject<Port[]>([])
+  ports$: Observable<Port[]>
+  portError$: Observable<string | null>
 
-  private get ports$() {
-    return this._ports$.asObservable()
+  constructor(private store: Store) {
+    this.ports$ = this.store.select(selectPorts)
+    this.portError$ = this.store.select(selectPortsError)
   }
 
-  constructor(private httpClient: HttpClient) {
-    this.httpClient.get<{vessels:Vessel[],ports:Port[]}>(environment.apiURL).subscribe(data => {
-      this._ports$.next([...data.ports]);
-    })
+  loadPorts(): void {
+    this.store.dispatch(loadPorts())
   }
 
-  getPorts(): Observable<Port[]> {
-    return this.ports$
-  }
-
-  createPort(port: Port):Observable<never> {
-    this._ports$.next([...this._ports$.value, {...port, id: `v${this._ports$.value.length}`}])
-    return EMPTY
+  createPort(port: Port): void {
+    this.store.dispatch(addPort({ port }))
   }
 }

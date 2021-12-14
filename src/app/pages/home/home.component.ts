@@ -27,10 +27,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isAuth$ = this.authService.isAuth$
     this.user$ = this.authService.user$
     this.trackedVessels$ = this.vesselService.getVessels()
-    this.trackedPorts$ = this.portService.getPorts()
+    this.trackedPorts$ = this.portService.ports$
   }
 
   ngOnInit(): void {
+    this.portService.loadPorts()
   }
 
   ngOnDestroy():void {

@@ -12,12 +12,14 @@ export class PortListComponent implements OnInit, OnDestroy {
 
   @Input() ports:Port[] = []
 
-  portsSub!: Subscription
+  portsSub: Subscription
 
-  constructor(private portService: PortService) { }
+  constructor(private portService: PortService) {
+    this.portsSub = this.portService.ports$.subscribe(ports => { this.ports = ports });
+  }
 
   ngOnInit(): void {
-    this.portsSub = this.portService.getPorts().subscribe(ports => {this.ports = ports});
+    this.portService.loadPorts()
   }
 
   ngOnDestroy():void {

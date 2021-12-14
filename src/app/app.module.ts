@@ -15,6 +15,7 @@ import { StoreModule } from '@ngrx/store';
 import { appReducer } from './shared/store/app.state';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffectsService } from './shared/store/auth-effects.service';
+import { PortEffectsService } from './shared/store/port-effects.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { AuthEffectsService } from './shared/store/auth-effects.service';
     PortModule,
     AppRoutingModule,
     StoreModule.forRoot(appReducer, {}),
-    EffectsModule.forRoot([AuthEffectsService]),
+    EffectsModule.forRoot([AuthEffectsService, PortEffectsService]),
   ],
   providers: [],
   bootstrap: [AppComponent]
