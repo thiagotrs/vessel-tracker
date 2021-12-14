@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { User } from 'src/app/core/models/user.model';
 import { login, loginFailure, loginSuccess, signup, signupFailure, signupSuccess } from './auth.state';
 
@@ -32,19 +32,7 @@ export class AuthEffectsService {
         map((user: User) => loginSuccess({ user })),
         catchError(error => of(loginFailure({ error })))
       )
-    ),
-    // switchMap(({ payload: { email, pass } }) => {
-    //   if (email === "admin@admin.com" && pass === "12345") {
-    //     const user: User = {
-    //       name: "Admin",
-    //       email: "admin@admin.com"
-    //     }
-    //     return of(user);
-    //   }
-    //   return throwError("Incorrect email and/or password!");
-    // }),
-    // map((user: User) => loginSuccess({ user })),
-    // catchError((error) => of(loginFailure({ error })))
+    )
   ));
 
   signup$ = createEffect(() => this.actions$.pipe(
