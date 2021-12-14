@@ -1,10 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Port } from 'src/app/core/models/port.model';
-import { Vessel } from 'src/app/core/models/vessel.model';
-import { environment } from '../../../environments/environment';
 import { addPort, loadPorts, selectPorts, selectPortsError } from '../store/port.state';
 
 @Injectable({
