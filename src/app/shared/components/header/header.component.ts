@@ -15,7 +15,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuth: boolean = false
 
   private authSub!: Subscription
-  private logoutSub?: Subscription
 
   constructor(
     private authService: AuthService,
@@ -27,14 +26,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.logoutSub = this.authService.logout().subscribe({
-      complete: () => this.router.navigate(["/auth", "login"])
-    })
+    this.authService.logout()
+    this.router.navigate(["/auth", "login"])
   }
 
   ngOnDestroy(): void {
     this.authSub.unsubscribe()
-    this.logoutSub?.unsubscribe()
   }
 
 }

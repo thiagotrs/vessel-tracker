@@ -1,46 +1,35 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { BehaviorSubject, EMPTY, Observable, throwError } from 'rxjs';
 import { User } from 'src/app/core/models/user.model';
+import { login, logout, selectAuthError, selectIsAuth, selectUser, signup } from '../store/auth.state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private _user = new BehaviorSubject<User | null>(null)
-  private _isAuth = new BehaviorSubject<boolean>(false)
+  user$: Observable<User | null>
+  isAuth$: Observable<boolean>
+  authError$: Observable<string | null>
 
-  constructor() { }
-
-  get user$(): Observable<User | null> {
-    return this._user.asObservable()
+  constructor(
+    private store: Store
+  ) {
+    this.user$ = this.store.select(selectUser)
+    this.isAuth$ = this.store.select(selectIsAuth)
+    this.authError$ = this.store.select(selectAuthError)
   }
 
-  get isAuth$(): Observable<boolean> {
-    return this._isAuth.asObservable()
+  login({ email, pass }: { email: string, pass: string }): void {
+    this.store.dispatch(login({ payload: { email, pass } }))
   }
 
-  login({ email, pass }: { email: string, pass: string }):Observable<never> {
-    if (email === "admin@admin.com" && pass === "12345") {
-      this._user.next({
-        name: "Admin",
-        email: "admin@admin.com"
-      })
-      this._isAuth.next(true)
-      return EMPTY
-    }
-    return throwError("Incorrect email and/or password!")
+  logout(): void {
+    this.store.dispatch(logout())
   }
 
-  logout():Observable<never> {
-    this._user.next(null)
-    this._isAuth.next(false)
-    return EMPTY
-  }
-
-  signup({ name, email, pass }: { name: string, email: string, pass: string }):Observable<never> {
-    this._user.next({ name, email })
-    this._isAuth.next(true)
-    return EMPTY
+  signup({ name, email, pass }: { name: string, email: string, pass: string }): void {
+    this.store.dispatch(signup({ payload: { name, email, pass } }))
   }
 }

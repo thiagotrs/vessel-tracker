@@ -13,24 +13,23 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   alertMessage: string = ''
 
-  private signupSub?:Subscription
+  private authErrorSub: Subscription
+  private isAuthSub: Subscription
 
   constructor(
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) {
+    this.authErrorSub = this.authService.authError$.subscribe(message => {this.alertMessage = message || ''})
+    this.isAuthSub = this.authService.isAuth$.subscribe(flag => flag && this.router.navigate(["/home"]))
+  }
 
   ngOnInit(): void {
   }
 
   onSubmit(myForm: NgForm) {
     const signup = { name: myForm.form.value.name, email: myForm.form.value.email, pass: myForm.form.value.pass }
-    this.signupSub = this.authService.signup(signup).subscribe({
-      complete: () => {
-        this.router.navigate(["/home"])
-      },
-      error: err => {this.alertMessage = err}
-    })
+    this.authService.signup(signup)
   }
 
   closeAlert() {
@@ -38,7 +37,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy():void {
-    this.signupSub?.unsubscribe()
+    this.authErrorSub.unsubscribe()
+    this.isAuthSub.unsubscribe()
   }
 
 }
