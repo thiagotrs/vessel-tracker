@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { User } from 'src/app/core/models/user.model';
 import { login, loginFailure, loginSuccess, signup, signupFailure, signupSuccess } from './auth.state';
 
@@ -18,7 +19,7 @@ export class AuthEffectsService {
   }
 
   private fakeSignup({ name, email, pass }: { name: string, email: string, pass: string }): Observable<User> {
-    if (email === "admin@admin.com" && pass === "12345") {
+    if (email === "admin@admin.com") {
       return throwError("User is already exists!")
     }
     const user: User = { name, email }
@@ -45,8 +46,14 @@ export class AuthEffectsService {
     )
   ));
 
+  loginSuccessNavigate$ = createEffect(() => this.actions$.pipe(
+    ofType(loginSuccess, signupSuccess),
+    tap(() => this.router.navigate(['/home']))
+  ), { dispatch: false });
+
   constructor(
     private store: Store,
-    private actions$: Actions
+    private actions$: Actions,
+    private router: Router
   ) { }
 }

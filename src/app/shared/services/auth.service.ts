@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, EMPTY, Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from 'src/app/core/models/user.model';
-import { login, logout, selectAuthError, selectIsAuth, selectUser, signup } from '../store/auth.state';
+import { cleanError, login, logout, selectAuthError, selectIsAuth, selectUser, signup } from '../store/auth.state';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +31,9 @@ export class AuthService {
 
   signup({ name, email, pass }: { name: string, email: string, pass: string }): void {
     this.store.dispatch(signup({ payload: { name, email, pass } }))
+  }
+
+  cleanError(): void {
+    this.store.dispatch(cleanError())
   }
 }

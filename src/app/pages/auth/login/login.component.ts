@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -9,23 +9,15 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './login.component.html',
   styles: []
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
 
-  alertMessage: string = ''
+  alertMessage$: Observable<string | null>
 
-  private authErrorSub: Subscription
-  private isAuthSub: Subscription
-
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {
-    this.authErrorSub = this.authService.authError$.subscribe(message => { this.alertMessage = message || '' })
-    this.isAuthSub = this.authService.isAuth$.subscribe(flag => flag && this.router.navigate(["/home"]))
+  constructor(private authService: AuthService) {
+    this.alertMessage$ = this.authService.authError$.pipe(tap(v => console.log(v)))
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   onSubmit(myForm: NgForm) {
     const login = { email: myForm.form.value.email, pass: myForm.form.value.pass }
@@ -33,12 +25,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   closeAlert() {
-    this.alertMessage = ''
-  }
-
-  ngOnDestroy():void {
-    this.authErrorSub.unsubscribe()
-    this.isAuthSub.unsubscribe()
+    this.authService.cleanError()
   }
 
 }
