@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Port } from 'src/app/core/models/port.model';
 import { PortService } from 'src/app/shared/services/port.service';
 
@@ -11,10 +10,7 @@ import { PortService } from 'src/app/shared/services/port.service';
 })
 export class PortAddComponent implements OnInit {
 
-  constructor(
-    private portService: PortService,
-    private router: Router
-  ) { }
+  constructor(private portService: PortService) { }
 
   ngOnInit(): void {
   }

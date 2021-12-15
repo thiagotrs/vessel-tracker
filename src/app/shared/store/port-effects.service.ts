@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { EMPTY, merge, Observable, of } from 'rxjs';
-import { catchError, exhaustMap, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { EMPTY, Observable, of } from 'rxjs';
+import { catchError, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Port } from 'src/app/core/models/port.model';
 import { Vessel } from 'src/app/core/models/vessel.model';
 import { environment } from 'src/environments/environment';
@@ -15,7 +15,6 @@ export class PortEffectsService {
 
   private getPorts(): Observable<Port[]> {
     return this.httpClient.get<{vessels:Vessel[],ports:Port[]}>(environment.apiURL).pipe(
-      tap(v => console.log(v)),
       map(value => value.ports)
     )
   }
