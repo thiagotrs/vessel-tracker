@@ -1,83 +1,45 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, of, throwError } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { BehaviorSubject, EMPTY, Observable, throwError } from 'rxjs';
 import { Port } from 'src/app/core/models/port.model';
-import { Status, Vessel } from 'src/app/core/models/vessel.model';
-import { environment } from '../../../environments/environment';
+import { Vessel } from 'src/app/core/models/vessel.model';
+import { addVessel, dockVessel, editNextRoutes, loadVessels, selectVesselById, selectVesselError, selectVessels, undockVessel } from '../store/vessel.state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VesselService {
 
-  private _vessels$ = new BehaviorSubject<Vessel[]>([])
+  vessels$: Observable<Vessel[]>
+  vesselError$: Observable<string | null>
 
-  private get vessels$() {
-    return this._vessels$.asObservable()
+  constructor(private store: Store) {
+    this.vessels$ = this.store.select(selectVessels)
+    this.vesselError$ = this.store.select(selectVesselError)
   }
 
-  constructor(private httpClient: HttpClient) {
-    this.httpClient.get<{vessels:Vessel[],ports:Port[]}>(environment.apiURL).subscribe(data => {
-      this._vessels$.next([...data.vessels]);
-    })
+  loadVessels(): void {
+    this.store.dispatch(loadVessels())
   }
 
-  getVessels(): Observable<Vessel[]> {
-    return this.vessels$
+  getVessel(id: string): Observable<Vessel | undefined> {
+    return this.store.select(selectVesselById(id))
   }
 
-  getVessel(id: string): Observable<Vessel> {
-    const result = this._vessels$.value.find(v => v.id === id);
-    if(!result) {
-      return throwError('Invalid ID')
-    }
-    return of(result);
+  createVessel(vessel: Vessel, portId: string): void {
+    this.store.dispatch(addVessel({ vessel, portId }))
   }
 
-  createVessel(vessel: Vessel, port: Port):Observable<never> {
-    this._vessels$.next([
-      ...this._vessels$.value, 
-      {...vessel, id: `v${this._vessels$.value.length}`, status: Status.PARKED, nextStops: [{port, dateIn: new Date()}], stops: []}
-    ])
-    return EMPTY
+  dockVessel(id: string): void {
+    this.store.dispatch(dockVessel({ id }))
   }
 
-  dockVessel(id: string):Observable<Vessel> {
-    const resultIndex = this._vessels$.value.findIndex(v => v.id === id);
-    if (!resultIndex) {
-      return throwError('Invalid ID')
-    }
-    const vessel = this._vessels$.value[resultIndex]
-    vessel.nextStops[0].dateIn = new Date();
-    vessel.status = Status.PARKED
-    vessel.nextStops = [...vessel.nextStops]
-    return of({...vessel})
+  unDockVessel(id: string): void {
+    this.store.dispatch(undockVessel({ id }))
   }
 
-  unDockVessel(id: string):Observable<Vessel> {
-    const resultIndex = this._vessels$.value.findIndex(v => v.id === id);
-    if (!resultIndex) {
-      return throwError('Invalid ID')
-    }
-    const vessel = this._vessels$.value[resultIndex]
-    vessel.nextStops[0].dateOut = new Date();
-    vessel.stops = [...vessel.stops, vessel.nextStops[0]]
-    vessel.nextStops = vessel.nextStops.slice(1)
-    vessel.status = Status.SAILING
-    return of({...vessel})
-  }
-
-  editNextRoutes(vesselId: string, nextStops:Port[]):Observable<void> {
-    const resultIndex = this._vessels$.value.findIndex(v => v.id === vesselId);
-    if (!resultIndex) {
-      return throwError('Invalid ID')
-    }
-
-    this._vessels$.value[resultIndex].nextStops = [
-      ...this._vessels$.value[resultIndex].nextStops.filter(stop => stop.dateIn), 
-      ...nextStops.map(port => ({port}))
-    ]
-
-    return EMPTY
+  editNextRoutes(vesselId: string, nextStops:Port[]): void {
+    this.store.dispatch(editNextRoutes({ vesselId, nextStops }))
   }
 }

@@ -31,3 +31,6 @@ export const portReducer = createReducer(
 export const selectPortState = createFeatureSelector<IPort>('port')
 export const selectPorts = createSelector(selectPortState, (ports: IPort) => ports.ports)
 export const selectPortsError = createSelector(selectPortState, (ports: IPort) => ports.error)
+export const selectPortById = (id: string) => createSelector(selectPortState, 
+    (port: IPort) => port.ports.find(port => port.id === id)
+)

@@ -25,7 +25,6 @@ export class RoutePlanAddComponent implements OnInit, OnDestroy, CanComponentDea
 
   private vesselSub!: Subscription
   private portsSub!: Subscription
-  private editRoutesSub?: Subscription
 
   isUnsaved: boolean = false
   errMessage: string = ''
@@ -51,26 +50,23 @@ export class RoutePlanAddComponent implements OnInit, OnDestroy, CanComponentDea
   }
 
   ngOnInit(): void {
-    this.vesselSub = this.vesselService.getVessel(this.id).subscribe({
-      error: () => this.router.navigate(['/not-found']),
-      next: vessel => {
-        this.vessel = vessel
-        this.nextStops = (this.vessel?.nextStops.filter(stop => !(stop.dateIn || stop.dateOut))
-                                                .map(stop => stop.port)) || []
-        this.currentStop = (this.vessel?.nextStops.find(stop => (stop.dateIn || stop.dateOut))) || null
+    this.vesselSub = this.vesselService.getVessel(this.id).subscribe(vessel => {
+      if(vessel === undefined) {
+        this.router.navigate(['/not-found'])
       }
+      
+      this.vessel = vessel as Vessel
+      this.nextStops = (this.vessel?.nextStops.filter(stop => !(stop.dateIn || stop.dateOut))
+                                              .map(stop => stop.port)) || []
+      this.currentStop = (this.vessel?.nextStops.find(stop => (stop.dateIn || stop.dateOut))) || null
     });
 
     this.portsSub = this.portService.ports$.subscribe(ports => {this.ports = ports})
   }
 
   save() {
-    this.editRoutesSub = this.vesselService.editNextRoutes(this.id, this.nextStops).subscribe({
-      complete: () => {
-        this.isUnsaved = false;
-        this.router.navigate(['/route-plan'])
-      }
-    })
+    this.vesselService.editNextRoutes(this.id, this.nextStops)
+    this.isUnsaved = false;
   }
 
   removeStop(index: number) {
@@ -115,7 +111,6 @@ export class RoutePlanAddComponent implements OnInit, OnDestroy, CanComponentDea
   ngOnDestroy():void {
     this.vesselSub.unsubscribe()
     this.portsSub.unsubscribe()
-    this.editRoutesSub?.unsubscribe()
   }
 
 }

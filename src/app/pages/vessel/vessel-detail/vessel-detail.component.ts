@@ -17,8 +17,6 @@ export class VesselDetailComponent implements OnInit, OnDestroy {
   vessel!: Vessel
   
   private vesselSub!: Subscription
-  private dockSub?: Subscription
-  private unDockSub?: Subscription
 
   constructor(
     private vesselService: VesselService,
@@ -29,26 +27,25 @@ export class VesselDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.vesselSub = this.vesselService.getVessel(this.id).subscribe({
-      error: () => this.router.navigate(['/not-found']),
-      next: vessel => { this.vessel = vessel }
+    this.vesselSub = this.vesselService.getVessel(this.id).subscribe(vessel => {
+      if(vessel === undefined) {
+        this.router.navigate(['/not-found'])
+      }
+      
+      this.vessel = vessel as Vessel
     })
   }
 
   toggleDock(actionType: DockActions) {
     if(actionType === DockActions.DOCK) {
-      this.dockSub = this.vesselService.dockVessel(this.id)
-                          .subscribe(vessel => this.vessel = vessel)
+      this.vesselService.dockVessel(this.id)
     } else if(actionType === DockActions.UNDOCK) {
-      this.unDockSub = this.vesselService.unDockVessel(this.id)
-                            .subscribe(vessel => this.vessel = vessel)
+      this.vesselService.unDockVessel(this.id)
     }
   }
 
   ngOnDestroy():void {
     this.vesselSub.unsubscribe();
-    this.dockSub?.unsubscribe();
-    this.unDockSub?.unsubscribe();
   }
   
 }
