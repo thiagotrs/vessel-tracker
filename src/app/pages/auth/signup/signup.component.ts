@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -14,7 +13,7 @@ export class SignupComponent implements OnInit {
   alertMessage$: Observable<string | null>
 
   constructor(private authService: AuthService) {
-    this.alertMessage$ = this.authService.authError$.pipe(tap(v => console.log(v)))
+    this.alertMessage$ = this.authService.authError$
   }
 
   ngOnInit(): void { }
