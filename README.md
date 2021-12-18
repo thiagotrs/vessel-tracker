@@ -9,9 +9,12 @@
 
 Vessel Tracker is an application for track 🚢 vessels and ⚓ ports around the world.
 
+<a href="https://github.com/thiagotrs/vessel-tracker/tree/feat/ngrx">[NEW] Check the NgRx version of Application</a>
+
 ## Technologies
 
 - Angular
+- NgRx (feature branch)
 
 ## Run Project
 
