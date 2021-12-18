@@ -1,10 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, EMPTY, Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Port } from 'src/app/core/models/port.model';
 import { Vessel } from 'src/app/core/models/vessel.model';
-import { addVessel, dockVessel, editNextRoutes, loadVessels, selectVesselById, selectVesselError, selectVessels, undockVessel } from '../store/vessel.state';
+import { addVessel, dockVessel, editNextRoutes, loadVesselById, loadVessels, selectVessel, selectVesselById, selectVesselError, selectVesselLoading, selectVessels, undockVessel } from '../store/vessel.state';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +12,22 @@ export class VesselService {
 
   vessels$: Observable<Vessel[]>
   vesselError$: Observable<string | null>
+  selectedVessel$: Observable<Vessel | null>
+  isLoading$: Observable<boolean>
 
   constructor(private store: Store) {
     this.vessels$ = this.store.select(selectVessels)
     this.vesselError$ = this.store.select(selectVesselError)
+    this.selectedVessel$ = this.store.select(selectVessel)
+    this.isLoading$ = this.store.select(selectVesselLoading)
   }
 
   loadVessels(): void {
     this.store.dispatch(loadVessels())
+  }
+
+  loadVesselById(id: string): void {
+    this.store.dispatch(loadVesselById({ vesselId: id }))
   }
 
   getVessel(id: string): Observable<Vessel | undefined> {

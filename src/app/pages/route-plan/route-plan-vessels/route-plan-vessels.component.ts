@@ -17,6 +17,7 @@ export class RoutePlanVesselsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.vesselService.loadVessels()
   }
 
 }

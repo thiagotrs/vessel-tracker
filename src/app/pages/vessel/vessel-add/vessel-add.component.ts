@@ -28,6 +28,7 @@ export class VesselAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.portService.loadPorts()
   }
 
   onSubmit(myForm:NgForm) {

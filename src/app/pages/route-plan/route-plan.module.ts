@@ -16,6 +16,12 @@ import { VesselsListModule } from 'src/app/shared/components/vessels-list/vessel
 import { BadgeModule } from 'src/app/shared/components/badge/badge.module';
 import { VesselHeroModule } from 'src/app/shared/components/vessel-hero/vessel-hero.module';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { RoutePlanEffectsService } from './state/route-plan-effects.service';
+import { routePlanReducer } from './state/route-plan.state';
+import { SpinnerModule } from 'src/app/shared/components/spinner/spinner.module';
+import { RoutePlanService } from './services/route-plan.service';
 
 const routePlanRoutes:Routes = [
   {
@@ -55,7 +61,11 @@ const routePlanRoutes:Routes = [
     BadgeModule,
     VesselsListModule,
     VesselHeroModule,
-    ButtonModule
-  ]
+    ButtonModule,
+    SpinnerModule,
+    StoreModule.forFeature('routePlan', routePlanReducer),
+    EffectsModule.forFeature([RoutePlanEffectsService]),
+  ],
+  providers: [RoutePlanService]
 })
 export class RoutePlanModule { }

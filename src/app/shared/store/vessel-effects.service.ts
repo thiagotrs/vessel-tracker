@@ -9,7 +9,7 @@ import { Port } from 'src/app/core/models/port.model';
 import { Status, Vessel } from 'src/app/core/models/vessel.model';
 import { environment } from 'src/environments/environment';
 import { selectPortById } from './port.state';
-import { addVessel, addVesselFailure, addVesselSuccess, dockVessel, dockVesselFailure, dockVesselSuccess, editNextRoutes, editNextRoutesFailure, editNextRoutesSuccess, loadVessels, loadVesselsFailure, loadVesselsSuccess, selectVesselById, selectVessels, undockVessel, undockVesselFailure, undockVesselSuccess } from './vessel.state';
+import { addVessel, addVesselFailure, addVesselSuccess, dockVessel, dockVesselFailure, dockVesselSuccess, editNextRoutes, editNextRoutesFailure, editNextRoutesSuccess, loadVesselById, loadVesselByIdFailure, loadVesselByIdSuccess, loadVessels, loadVesselsFailure, loadVesselsSuccess, selectVesselById, selectVessels, undockVessel, undockVesselFailure, undockVesselSuccess } from './vessel.state';
 
 @Injectable()
 export class VesselEffectsService {
@@ -30,7 +30,7 @@ export class VesselEffectsService {
       take(1),
       map(port => {
         if(port === undefined) {
-          new Error('Invalid ID')
+          throw new Error('Invalid ID')
         }
         const newVessel: Vessel = { 
           ...vessel, 
@@ -50,7 +50,7 @@ export class VesselEffectsService {
       take(1),
       map(vessel => {
         if(vessel === undefined) {
-          new Error('Invalid ID')
+          throw new Error('Invalid ID')
         }
 
         const updatedVessel: Vessel = { 
@@ -71,7 +71,7 @@ export class VesselEffectsService {
       take(1),
       map(vessel => {
         if(vessel === undefined) {
-          new Error('Invalid ID')
+          throw new Error('Invalid ID')
         }
 
         const updatedVessel: Vessel = {
@@ -91,7 +91,7 @@ export class VesselEffectsService {
       take(1),
       map(vessel => {
         if(vessel === undefined) {
-          new Error('Invalid ID')
+          throw new Error('Invalid ID')
         }
 
         const updatedVessel: Vessel = {
@@ -103,6 +103,24 @@ export class VesselEffectsService {
         }
 
         return updatedVessel
+      })
+    )
+  }
+
+  private getVesselById(vesselId: string): Observable<Vessel> {
+    return this.store.select(selectVesselById(vesselId)).pipe(
+      take(1),
+      mergeMap(vessel => {
+        if(vessel === undefined) {
+          return this.httpClient.get<{vessels:Vessel[], ports:Port[]}>(environment.apiURL).pipe(
+            map(value => {
+              const vessel = value.vessels.find(v => v.id === vesselId)
+              if(vessel === undefined) throw new Error('Invalid ID')
+              return vessel as Vessel
+            })
+          )
+        }
+        return of(vessel)
       })
     )
   }
@@ -153,6 +171,16 @@ export class VesselEffectsService {
     ))
   ))
 
+  loadVesselById$ = createEffect(() => this.actions$.pipe(
+    ofType(loadVesselById),
+    mergeMap(({ vesselId }) => this.getVesselById(vesselId).pipe(
+      map((vessel: Vessel) => loadVesselByIdSuccess({ vessel })),
+      catchError(error => {
+        return of(loadVesselByIdFailure({ error }))
+      })
+    ))
+  ))
+
   addVesselSuccessNavigate$ = createEffect(() => this.actions$.pipe(
     ofType(addVesselSuccess),
     tap(() => this.router.navigate(['/vessel']))
@@ -163,7 +191,13 @@ export class VesselEffectsService {
     tap(() => this.router.navigate(['/route-plan']))
   ), { dispatch: false });
 
-  constructor(private store: Store,
+  loadVesselByIdNavigate$ = createEffect(() => this.actions$.pipe(
+    ofType(loadVesselByIdFailure),
+    tap(() => this.router.navigate(['/not-found']))
+  ), { dispatch: false });
+
+  constructor(
+    private store: Store,
     private actions$: Actions,
     private httpClient: HttpClient,
     private router: Router

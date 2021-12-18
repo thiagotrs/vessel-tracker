@@ -1,24 +1,30 @@
-<app-vessel-hero [vessel]="vessel">
-  <button type="button" app-button size="large" class="mx-1" [disabled]="!isUnsaved" (click)="save()">Save Plan</button>
-</app-vessel-hero>
+<ng-container *ngIf="!(isLoading$ | async); else load">
+  <app-vessel-hero [vessel]="vessel">
+    <button type="button" app-button size="large" class="mx-1" [disabled]="!isUnsaved" (click)="save()">Save Plan</button>
+  </app-vessel-hero>
 
-<form #routePlanForm="ngForm">
-  <div class="input-group mb-3">
-    <select name="port" id="port" class="form-select form-select-lg" ngModel #port="ngModel" required>
-      <option value="" selected disabled>Select Port</option>
-      <option *ngFor="let port of ports" [value]="port.id">
-        {{port.name + ' (' + port.location.city + ', ' + port.location.country + ')'}}
-      </option>
-    </select>
-    <button class="btn btn-success" (click)="addStop(port.value); routePlanForm.resetForm({port:''})" [disabled]="port.invalid">Add Route</button>
-  </div>
-  <app-alert type="warning" [message]="errMessage" *ngIf="errMessage" (onClose)="closeAlert()"></app-alert>
-</form>
+  <form #routePlanForm="ngForm">
+    <div class="input-group mb-3">
+      <select name="port" id="port" class="form-select form-select-lg" ngModel #port="ngModel" required>
+        <option value="" selected disabled>Select Port</option>
+        <option *ngFor="let port of ports" [value]="port.id">
+          {{port.name + ' (' + port.location.city + ', ' + port.location.country + ')'}}
+        </option>
+      </select>
+      <button class="btn btn-success" (click)="addStop(port.value); routePlanForm.resetForm({port:''})" [disabled]="port.invalid">Add Route</button>
+    </div>
+    <app-alert type="warning" [message]="alert || ''" *ngIf="(alertMessage$ | async) as alert" (onClose)="closeAlert()"></app-alert>
+  </form>
 
-<ng-container *ngIf="currentStop">
-  <h2>📍 Current Stop</h2>
-  <app-stop [stop]="currentStop"></app-stop>
+  <ng-container *ngIf="currentStop">
+    <h2>📍 Current Stop</h2>
+    <app-stop [stop]="currentStop"></app-stop>
+  </ng-container>
+
+  <h2>📍 Next Stops <span app-badge color="secondary">{{ nextStops.length }}</span></h2>
+  <app-ports-list [ports]="nextStops" (onDelete)="removeStop($event)"></app-ports-list>
 </ng-container>
-
-<h2>📍 Next Stops <span app-badge color="secondary">{{nextStops.length}}</span></h2>
-<app-ports-list [ports]="nextStops" (onDelete)="removeStop($event)"></app-ports-list>
+<ng-template #load>
+  <h2 class="text-center">Carregando</h2>
+  <p class="text-center"><app-spinner></app-spinner></p>
+</ng-template>

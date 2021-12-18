@@ -17,6 +17,7 @@ export class VesselListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.vesselService.loadVessels()
   }
 
 }
