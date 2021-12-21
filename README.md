@@ -14,7 +14,7 @@ Vessel Tracker is an application for track 🚢 vessels and ⚓ ports around the
 ## Technologies
 
 - Angular
-- NgRx (feature branch)
+- Bootstrap
 
 ## Run Project
 
