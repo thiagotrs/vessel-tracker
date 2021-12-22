@@ -17,6 +17,7 @@ import { BadgeModule } from 'src/app/shared/components/badge/badge.module';
 import { DockButtonComponent } from './components/dock-button/dock-button.component';
 import { VesselsListModule } from 'src/app/shared/components/vessels-list/vessels-list.module';
 import { VesselHeroModule } from 'src/app/shared/components/vessel-hero/vessel-hero.module';
+import { SpinnerModule } from 'src/app/shared/components/spinner/spinner.module';
 
 const vesselRoutes: Routes = [
   {
@@ -61,7 +62,8 @@ const vesselRoutes: Routes = [
     ListGroupModule,
     ModalModule,
     VesselsListModule,
-    VesselHeroModule
+    VesselHeroModule,
+    SpinnerModule
   ],
 })
 export class VesselModule { }

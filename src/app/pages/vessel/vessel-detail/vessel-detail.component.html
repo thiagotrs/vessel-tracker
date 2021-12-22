@@ -1,16 +1,22 @@
-<app-vessel-hero [vessel]="vessel">
-  <a app-button size="large" class="mx-1" [routerLink]="['/route-plan', vessel.id]">New Route</a>
-  <app-dock-button 
-    [status]="!vessel.nextStops[0].dateIn"
-    (onToggle)="toggleDock($event)"
-    *ngIf="vessel.nextStops[0]"
-  ></app-dock-button>
-</app-vessel-hero>
+<ng-container *ngIf="!(isLoading$ | async); else load">
+  <app-vessel-hero [vessel]="vessel">
+    <a app-button size="large" class="mx-1" [routerLink]="['/route-plan', vessel.id]">New Route</a>
+    <app-dock-button 
+      [status]="!vessel.nextStops[0].dateIn"
+      (onToggle)="toggleDock($event)"
+      *ngIf="vessel.nextStops[0]"
+    ></app-dock-button>
+  </app-vessel-hero>
 
-<ng-container *ngIf="vessel.nextStops.length">
-  <h2>Next Stop <span app-badge color="secondary">{{vessel.nextStops.length}}</span></h2>
-  <app-stops-list [stops]="vessel.nextStops"></app-stops-list>
+  <ng-container *ngIf="vessel.nextStops.length">
+    <h2>Next Stop <span app-badge color="secondary">{{ vessel.nextStops.length }}</span></h2>
+    <app-stops-list [stops]="vessel.nextStops"></app-stops-list>
+  </ng-container>
+
+  <h2>Last Stops <span app-badge color="secondary">{{ vessel.stops.length }}</span></h2>
+  <app-stops-list [stops]="vessel.stops"></app-stops-list>
 </ng-container>
-
-<h2>Last Stops <span app-badge color="secondary">{{vessel.stops.length}}</span></h2>
-<app-stops-list [stops]="vessel.stops"></app-stops-list>
+<ng-template #load>
+  <h2 class="text-center">Carregando</h2>
+  <p class="text-center"><app-spinner></app-spinner></p>
+</ng-template>

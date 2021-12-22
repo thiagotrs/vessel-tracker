@@ -16,6 +16,7 @@ import { VesselsListModule } from 'src/app/shared/components/vessels-list/vessel
 import { BadgeModule } from 'src/app/shared/components/badge/badge.module';
 import { VesselHeroModule } from 'src/app/shared/components/vessel-hero/vessel-hero.module';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
+import { SpinnerModule } from 'src/app/shared/components/spinner/spinner.module';
 
 const routePlanRoutes:Routes = [
   {
@@ -55,7 +56,8 @@ const routePlanRoutes:Routes = [
     BadgeModule,
     VesselsListModule,
     VesselHeroModule,
-    ButtonModule
+    ButtonModule,
+    SpinnerModule
   ]
 })
 export class RoutePlanModule { }

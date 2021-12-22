@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Vessel } from 'src/app/core/models/vessel.model';
 import { VesselService } from 'src/app/shared/services/vessel.service';
 
@@ -8,21 +8,16 @@ import { VesselService } from 'src/app/shared/services/vessel.service';
   templateUrl: './route-plan-vessels.component.html',
   styles: []
 })
-export class RoutePlanVesselsComponent implements OnInit, OnDestroy {
+export class RoutePlanVesselsComponent implements OnInit {
 
-  vessels:Vessel[] = []
-
-  private vesselsSub!: Subscription
+  vessels$: Observable<Vessel[]>
 
   constructor(private vesselService: VesselService) {
+    this.vessels$ = this.vesselService.vessels$
   }
 
   ngOnInit(): void {
-    this.vesselsSub = this.vesselService.getVessels().subscribe(vessels => {this.vessels = vessels});
-  }
-
-  ngOnDestroy(): void {
-    this.vesselsSub.unsubscribe();
+    this.vesselService.loadVessels()
   }
 
 }

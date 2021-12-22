@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Port } from 'src/app/core/models/port.model';
 import { Status, Vessel } from 'src/app/core/models/vessel.model';
 import { ConfirmModalComponent } from 'src/app/shared/components/modal/confirm-modal.component';
@@ -14,37 +13,33 @@ import { VesselService } from 'src/app/shared/services/vessel.service';
   templateUrl: './vessel-add.component.html',
   styles: []
 })
-export class VesselAddComponent implements OnInit, OnDestroy {
+export class VesselAddComponent implements OnInit {
 
   status:Status[] = [Status.SAILING, Status.PARKED]
 
-  ports!:Port[]
-
-  private portsSub!: Subscription
+  ports$: Observable<Port[]>
 
   constructor(
     private vesselService: VesselService,
     private portService: PortService,
-    private router: Router,
     private portalService: PortalService
-  ) { }
+  ) {
+    this.ports$ = this.portService.ports$
+  }
 
   ngOnInit(): void {
-    this.portsSub = this.portService.ports$.subscribe(ports => {this.ports = ports})
+    this.portService.loadPorts()
   }
 
   onSubmit(myForm:NgForm) {
     this.openModal(() => {
       const vessel = { name: myForm.form.value.name, ownership: myForm.form.value.ownership, year: myForm.form.value.year }  as Vessel
-      const port = this.ports.find(port => port.id === myForm.form.value.port) as Port
-      this.vesselService.createVessel(vessel, port).subscribe({
-        complete: () => this.router.navigate(['/vessel'])
-      })
+      this.vesselService.createVessel(vessel, myForm.form.value.port)
     });
   }
 
   clear(myForm:NgForm) {
-    myForm.resetForm({port:''})
+    myForm.resetForm({ port:'' })
   }
 
   openModal(saveFn: Function) {
@@ -66,10 +61,6 @@ export class VesselAddComponent implements OnInit, OnDestroy {
     // alertModalRef.instance.message = "isso é um teste"
     // alertModalRef.instance.onClose.subscribe(() => {console.log('close button was clicked')})
     // alertModalRef.instance.onSave.subscribe(() => {console.log('save button was clicked')})
-  }
-
-  ngOnDestroy():void {
-    this.portsSub.unsubscribe()
   }
 
 }

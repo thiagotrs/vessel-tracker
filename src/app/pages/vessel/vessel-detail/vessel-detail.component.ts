@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 import { Vessel } from 'src/app/core/models/vessel.model';
 import { VesselService } from 'src/app/shared/services/vessel.service';
 import { DockActions } from '../components/dock-button/dock-button.component';
@@ -15,40 +15,37 @@ export class VesselDetailComponent implements OnInit, OnDestroy {
   private id:string
 
   vessel!: Vessel
+  isLoading$: Observable<boolean>
   
-  private vesselSub!: Subscription
-  private dockSub?: Subscription
-  private unDockSub?: Subscription
+  private subs = new Subscription()
 
   constructor(
     private vesselService: VesselService,
     private route: ActivatedRoute,
-    private router: Router,
   ) {
     this.id = this.route.snapshot.paramMap.get('id') || '';
+    this.isLoading$ = this.vesselService.isLoading$
   }
 
   ngOnInit(): void {
-    this.vesselSub = this.vesselService.getVessel(this.id).subscribe({
-      error: () => this.router.navigate(['/not-found']),
-      next: vessel => { this.vessel = vessel }
-    })
+    this.vesselService.loadVesselById(this.id)
+    this.subs.add(
+      this.vesselService.selectedVessel$.subscribe(vessel => {
+        this.vessel = vessel as Vessel
+      })
+    )
   }
 
   toggleDock(actionType: DockActions) {
     if(actionType === DockActions.DOCK) {
-      this.dockSub = this.vesselService.dockVessel(this.id)
-                          .subscribe(vessel => this.vessel = vessel)
+      this.subs.add(this.vesselService.dockVessel(this.id))
     } else if(actionType === DockActions.UNDOCK) {
-      this.unDockSub = this.vesselService.unDockVessel(this.id)
-                            .subscribe(vessel => this.vessel = vessel)
+      this.subs.add(this.vesselService.unDockVessel(this.id))
     }
   }
 
-  ngOnDestroy():void {
-    this.vesselSub.unsubscribe();
-    this.dockSub?.unsubscribe();
-    this.unDockSub?.unsubscribe();
+  ngOnDestroy(): void {
+    this.subs.unsubscribe()
   }
   
 }

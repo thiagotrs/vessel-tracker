@@ -26,12 +26,13 @@ export class HomeComponent implements OnInit {
   ) {
     this.isAuth$ = this.authService.isAuth$
     this.user$ = this.authService.user$
-    this.trackedVessels$ = this.vesselService.getVessels()
+    this.trackedVessels$ = this.vesselService.vessels$
     this.trackedPorts$ = this.portService.ports$
   }
 
   ngOnInit(): void {
     this.portService.loadPorts()
+    this.vesselService.loadVessels()
   }
 
 }
