@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Port } from 'src/app/core/models/port.model';
 import { User } from 'src/app/core/models/user.model';
 import { Vessel } from 'src/app/core/models/vessel.model';
@@ -12,7 +12,7 @@ import { VesselService } from 'src/app/shared/services/vessel.service';
   templateUrl: './home.component.html',
   styles: []
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
 
   user$: Observable<User | null>
   isAuth$: Observable<boolean>
@@ -27,12 +27,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isAuth$ = this.authService.isAuth$
     this.user$ = this.authService.user$
     this.trackedVessels$ = this.vesselService.getVessels()
-    this.trackedPorts$ = this.portService.getPorts()
+    this.trackedPorts$ = this.portService.ports$
   }
 
   ngOnInit(): void {
+    this.portService.loadPorts()
   }
 
-  ngOnDestroy():void {
-  }
 }

@@ -1,5 +1,5 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Port } from 'src/app/core/models/port.model';
 import { PortService } from 'src/app/shared/services/port.service';
 
@@ -8,20 +8,16 @@ import { PortService } from 'src/app/shared/services/port.service';
   templateUrl: './port-list.component.html',
   styles: []
 })
-export class PortListComponent implements OnInit, OnDestroy {
+export class PortListComponent implements OnInit {
 
-  @Input() ports:Port[] = []
+  ports$: Observable<Port[]>
 
-  portsSub!: Subscription
-
-  constructor(private portService: PortService) { }
-
-  ngOnInit(): void {
-    this.portsSub = this.portService.getPorts().subscribe(ports => {this.ports = ports});
+  constructor(private portService: PortService) {
+    this.ports$ = this.portService.ports$
   }
 
-  ngOnDestroy():void {
-    this.portsSub.unsubscribe();
+  ngOnInit(): void {
+    this.portService.loadPorts()
   }
 
 }

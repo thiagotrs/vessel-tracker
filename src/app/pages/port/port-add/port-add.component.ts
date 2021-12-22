@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Port } from 'src/app/core/models/port.model';
 import { PortService } from 'src/app/shared/services/port.service';
 
@@ -11,10 +10,7 @@ import { PortService } from 'src/app/shared/services/port.service';
 })
 export class PortAddComponent implements OnInit {
 
-  constructor(
-    private portService: PortService,
-    private router: Router
-  ) { }
+  constructor(private portService: PortService) { }
 
   ngOnInit(): void {
   }
@@ -29,9 +25,7 @@ export class PortAddComponent implements OnInit {
       capacity: myForm.form.value.capacity 
     } as Port
     
-    this.portService.createPort(port).subscribe({
-      complete: () => this.router.navigate(['/port'])
-    })
+    this.portService.createPort(port)
   }
 
   clear(myForm:NgForm) {
