@@ -1,8 +1,8 @@
 <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class=" mb-3">
-  <app-alert type="warning" [message]="alertMessage" (onClose)="closeAlert(); loginForm.resetForm()" *ngIf="alertMessage"></app-alert>
+  <app-alert type="warning" [message]="alert || ''" (onClose)="closeAlert(); loginForm.resetForm()" *ngIf="(alertMessage$ | async) as alert"></app-alert>
   <div class="mb-2">
     <label class="form-label fs-5" for="email">Email:</label>
-    <input type="email" class="form-control p-3" id="email" name="email" placeholder="name@example.com" required ngModel #email="ngModel" aria-describedby="emailHelp">
+    <input type="email" email class="form-control p-3" id="email" name="email" placeholder="name@example.com" required ngModel #email="ngModel" aria-describedby="emailHelp">
     <div id="emailHelp" class="text-danger" *ngIf="email.invalid && (email.dirty || email.touched)">Email is required</div>
   </div>
   <div class="mb-2">

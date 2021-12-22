@@ -7,20 +7,22 @@
 				</a>
 			</h1>
 
-			<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0" *ngIf="isAuth">
-				<li><a routerLink="/home" class="nav-link px-2 text-white" routerLinkActive="active-button">Home</a></li>
-				<li><a routerLink="/vessel" class="nav-link px-2 text-white" routerLinkActive="active-button">Vessels</a></li>
-				<li><a routerLink="/port" class="nav-link px-2 text-white" routerLinkActive="active-button">Ports</a></li>
-				<li><a routerLink="/route-plan" class="nav-link px-2 text-white" routerLinkActive="active-button">Route Planning</a></li>
-			</ul>
+			<ng-container *ngIf="(isAuth$ | async); else logoutArea">
+				<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+					<li><a routerLink="/home" class="nav-link px-2 text-white" routerLinkActive="active-button">Home</a></li>
+					<li><a routerLink="/vessel" class="nav-link px-2 text-white" routerLinkActive="active-button">Vessels</a></li>
+					<li><a routerLink="/port" class="nav-link px-2 text-white" routerLinkActive="active-button">Ports</a></li>
+					<li><a routerLink="/route-plan" class="nav-link px-2 text-white" routerLinkActive="active-button">Route Planning</a></li>
+				</ul>
 
-			<div class="text-end ms-lg-auto" *ngIf="!isAuth; else logoutBtn">
-				<a routerLink="/auth/login" class="btn btn-outline-light me-2">Login</a>
-				<a routerLink="/auth/signup" class="btn btn-warning">Sign-up</a>
-			</div>
-			<ng-template #logoutBtn>
 				<div class="text-end">
 					<button type="button" app-button color="warning" (click)="logout()">Logout</button>
+				</div>
+			</ng-container>
+			<ng-template #logoutArea>
+				<div class="text-end ms-lg-auto">
+					<a routerLink="/auth/login" class="btn btn-outline-light me-2">Login</a>
+					<a routerLink="/auth/signup" class="btn btn-warning">Sign-up</a>
 				</div>
 			</ng-template>
 		</div>

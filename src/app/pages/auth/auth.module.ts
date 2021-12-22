@@ -6,11 +6,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { AlertModule } from 'src/app/shared/components/alert/alert.module';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {
     path: 'auth',
     component: AuthComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'signup', component: SignupComponent },
@@ -30,6 +32,7 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forChild(routes),
     AlertModule
-  ]
+  ],
+  providers: [AuthGuard]
 })
 export class AuthModule { }

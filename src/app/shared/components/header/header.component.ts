@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -10,31 +9,19 @@ import { AuthService } from 'src/app/shared/services/auth.service';
     '.active-button {color: rgba(var(--bs-secondary-rgb),var(--bs-text-opacity))!important;}'
   ]
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
 
-  isAuth: boolean = false
+  isAuth$: Observable<boolean>
 
-  private authSub!: Subscription
-  private logoutSub?: Subscription
-
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) { }
+  constructor(private authService: AuthService) {
+    this.isAuth$ = this.authService.isAuth$
+  }
 
   ngOnInit(): void {
-    this.authSub = this.authService.isAuth$.subscribe(isAuth => {this.isAuth = isAuth})
   }
 
   logout() {
-    this.logoutSub = this.authService.logout().subscribe({
-      complete: () => this.router.navigate(["/auth", "login"])
-    })
-  }
-
-  ngOnDestroy(): void {
-    this.authSub.unsubscribe()
-    this.logoutSub?.unsubscribe()
+    this.authService.logout()
   }
 
 }
