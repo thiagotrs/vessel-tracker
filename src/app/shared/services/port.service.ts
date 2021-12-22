@@ -31,7 +31,7 @@ export class PortService implements OnDestroy {
   ) { }
 
   private getPorts(): Observable<Port[]> {
-    return this.httpClient.get<{vessels:Vessel[],ports:Port[]}>(environment.apiURL).pipe(
+    return this.httpClient.get<{vessels:Vessel[], ports:Port[]}>(environment.apiURL).pipe(
       map(value => value.ports)
     )
   }
@@ -42,17 +42,14 @@ export class PortService implements OnDestroy {
   }
 
   private addPort(port: Port): Observable<Port> {
-    const portWithId = { ...port, id: this.uuid() }
-    return of(portWithId)
+    return of({ ...port, id: this.uuid() })
   }
 
   loadPorts(): void {
     this.subs.add(
       this.ports$.pipe(
-        mergeMap((ports) => {
-          if(ports.length) {
-            return of(ports)
-          }
+        mergeMap(ports => {
+          if(ports.length) return EMPTY
           return this.getPorts()
         })
       ).subscribe(ports => this._ports$.next(ports))
