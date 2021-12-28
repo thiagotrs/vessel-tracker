@@ -1,20 +1,25 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, EMPTY, Observable, of, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { User } from 'src/app/core/models/user.model';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements OnDestroy {
+export class AuthService {
 
   private _user = new BehaviorSubject<User | null>(null)
   private _isAuth = new BehaviorSubject<boolean>(false)
   private _error = new BehaviorSubject<string | null>(null)
 
-  private subs = new Subscription()
+  private _isFirstLoading = new BehaviorSubject<boolean>(true)
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private apiService: ApiService
+  ) { }
 
   get user$(): Observable<User | null> {
     return this._user.asObservable()
@@ -28,60 +33,73 @@ export class AuthService implements OnDestroy {
     return this._error.asObservable()
   }
 
-  private fakeLogin({ email, pass }: { email: string, pass: string }): Observable<User> {
-    if (email !== "admin@admin.com" || pass !== "12345") {
-      return throwError("Incorrect email and/or password!")
-    }
-    const user: User = { name: "Admin", email: "admin@admin.com" }
-    return of(user)
-  }
-
-  private fakeSignup({ name, email, pass }: { name: string, email: string, pass: string }): Observable<User> {
-    if (email === "admin@admin.com") {
-      return throwError("User is already exists!")
-    }
-    const user: User = { name, email }
-    return of(user)
-  }
-
-  login({ email, pass }: { email: string, pass: string }): void {
-    this.subs.add(
-      this.fakeLogin({ email, pass }).subscribe({
-        next: user => {
-          this._user.next(user)
-          this._isAuth.next(true)
-          this._error.next(null)
-        },
-        complete: () => this.router.navigate(["/home"]),
-        error: err => this._error.next(err)
+  autoGuardLogin(): Observable<boolean> {
+    return this._isFirstLoading.asObservable().pipe(
+      mergeMap(flag => {
+        if (!flag) return of(true)
+        return this.apiService.verifyUser().pipe(
+          map(user => {
+            this._user.next(user)
+            this._isAuth.next(true)
+            this._error.next(null)
+            this._isFirstLoading.next(false)
+            return true
+          }),
+          catchError(() => {
+            this._isAuth.next(false)
+            return of(false)
+          })
+        )
       })
     )
   }
 
-  logout():void {
-    this._user.next(null)
-    this._isAuth.next(false)
-    this._error.next(null)
-    this.router.navigate(["/"])
+  autoLogin(): void {
+    this.apiService.verifyUser().subscribe({
+      next: user => {
+        this._user.next(user)
+        this._isAuth.next(true)
+        this._error.next(null)
+      },
+      error: () => this._isAuth.next(false)
+    })
   }
 
-  signup({ name, email, pass }: { name: string, email: string, pass: string }): void {
-    this.subs.add(this.fakeSignup({ name, email, pass }).subscribe({
+  login({ email, pass }: { email: string, pass: string }): void {
+    this.apiService.signIn({ email, pass }).subscribe({
       next: user => {
         this._user.next(user)
         this._isAuth.next(true)
         this._error.next(null)
       },
       complete: () => this.router.navigate(["/home"]),
-      error: err => { this._error.next(err) }
-    }))
+      error: err => this._error.next(err)
+    })
+  }
+
+  logout():void {
+    this.apiService.logout().subscribe(() => {
+      this._user.next(null)
+      this._isAuth.next(false)
+      this._error.next(null)
+      this.router.navigate(["/"])
+    })
+  }
+
+  signup({ name, email, pass }: { name: string, email: string, pass: string }): void {
+    this.apiService.signUp({ name, email, pass }).subscribe({
+      next: user => {
+        this._user.next(user)
+        this._isAuth.next(true)
+        this._error.next(null)
+      },
+      complete: () => this.router.navigate(["/home"]),
+      error: err => this._error.next(err)
+    })
   }
 
   cleanError(): void {
     this._error.next(null)
   }
-
-  ngOnDestroy(): void {
-    this.subs.unsubscribe()
-  }
+  
 }

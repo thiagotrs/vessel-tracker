@@ -9,7 +9,8 @@ export class Stop {
   constructor(
     public port:Port,
     public dateIn?:Date,
-    public dateOut?:Date
+    public dateOut?:Date,
+    public id?: number
   ) {}
 }
 

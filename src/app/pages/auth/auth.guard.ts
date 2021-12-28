@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { from, Observable } from 'rxjs';
+import { concatAll, map, take } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 export interface CanComponentDeactivate {
@@ -20,15 +20,21 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authService.isAuth$.pipe(
-      take(1),
-      map(isAuth => {
-        if (isAuth) {
-          return this.router.createUrlTree(['/home']);
-        }
-        return true;
-      })
-    )
+    this.authService.autoGuardLogin().pipe(
+      map(flag => flag ? this.router.createUrlTree(['/home']) : true)
+  )
+    return from([
+      this.authService.autoGuardLogin().pipe(map(flag => flag ? this.router.createUrlTree(['/home']) : true)),
+      this.authService.isAuth$.pipe(
+        take(1),
+        map(isAuth => {
+          if (isAuth) {
+            return this.router.createUrlTree(['/home']);
+          }
+          return true;
+        })
+      )
+    ]).pipe(concatAll())
   }
   
 }
