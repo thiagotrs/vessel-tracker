@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, EMPTY, of, Subscription } from 'rxjs';
-import { catchError, concatMap, map, mergeMap, take, tap } from 'rxjs/operators';
+import { concatMap, map, mergeMap, take, tap } from 'rxjs/operators';
 import { Port } from 'src/app/core/models/port.model';
 import { Status, Vessel } from 'src/app/core/models/vessel.model';
 import { ApiService } from './api.service';
@@ -58,8 +58,7 @@ export class VesselService implements OnDestroy {
           if(vessel === undefined) {
             this._isLoading$.next(true)
             return this.apiService.getVessel(id).pipe(
-              tap(() => this._isLoading$.next(false)),
-              // catchError(err => { throw new Error('Invalid ID') })
+              tap(() => this._isLoading$.next(false))
             )
           }
           return of(vessel)
@@ -73,7 +72,7 @@ export class VesselService implements OnDestroy {
 
   createVessel(vessel: Vessel, portId: string): void {
     this.subs.add(
-      this.apiService.addVessel(vessel, portId).subscribe({
+      this.apiService.addVessel({ ...vessel, status: Status.PARKED }, portId).subscribe({
         next: vessel => this._vessels$.next([...this._vessels$.value, vessel]),
         error: err => this._error$.next(err),
         complete: () => this.router.navigate(['/vessel'])
@@ -139,7 +138,7 @@ export class VesselService implements OnDestroy {
             ]
           } as Vessel
         }),
-        concatMap(updatedVessels => this.apiService.deleteAddVessel(updatedVessels.nextStops, updatedVessels.id).pipe(
+        concatMap(updatedVessels => this.apiService.updateAllStopsVessel(updatedVessels.nextStops, updatedVessels.id).pipe(
           map(nextStops => ({ ...updatedVessels, nextStops: [...nextStops] } as Vessel))
         ))
       ).subscribe({

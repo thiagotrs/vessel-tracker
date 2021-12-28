@@ -20,11 +20,8 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.authService.autoGuardLogin().pipe(
-      map(flag => flag ? this.router.createUrlTree(['/home']) : true)
-  )
     return from([
-      this.authService.autoGuardLogin().pipe(map(flag => flag ? this.router.createUrlTree(['/home']) : true)),
+      this.authService.autoLogin().pipe(map(flag => flag ? this.router.createUrlTree(['/home']) : true)),
       this.authService.isAuth$.pipe(
         take(1),
         map(isAuth => {
@@ -36,5 +33,5 @@ export class AuthGuard implements CanActivate {
       )
     ]).pipe(concatAll())
   }
-  
+
 }

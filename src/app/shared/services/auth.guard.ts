@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanDeactivate<CanCompone
 
   permit(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return from([
-      this.authService.autoGuardLogin().pipe(map(flag => flag || this.router.createUrlTree(['/auth', 'login']))),
+      this.authService.autoLogin().pipe(map(flag => flag || this.router.createUrlTree(['/auth', 'login']))),
       this.authService.isAuth$.pipe(
         take(1),
         map(isAuth => {

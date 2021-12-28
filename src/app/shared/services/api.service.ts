@@ -64,11 +64,7 @@ export class ApiService {
       name: vessel.name,
       ownership: vessel.ownership,
       status: vessel.status,
-      year: vessel.year,
-      // stops: [
-      //   ...vessel.stops.map(s => this.toStopHttp(s)),
-      //   ...vessel.nextStops.map(s => this.toStopHttp(s))
-      // ],
+      year: vessel.year
     }
   }
 
@@ -150,7 +146,7 @@ export class ApiService {
   addVessel(vessel: Vessel, portId: string): Observable<Vessel> {
     return this.httpClient.post<VesselHttp[]>(
       `${this.apiUrl}/rest/v1/vessels`,
-      this.toVesselHttp({...vessel, status: Status.PARKED})
+      this.toVesselHttp(vessel)
     ).pipe(
       concatMap(vessels => this.httpClient.post<StopHttp[]>(
         `${this.apiUrl}/rest/v1/stops?select=*,ports(*)`,
@@ -171,7 +167,7 @@ export class ApiService {
     )
   }
 
-  deleteAddVessel(stops: Stop[], vesselId: string): Observable<Stop[]> {
+  updateAllStopsVessel(stops: Stop[], vesselId: string): Observable<Stop[]> {
     const stopsHttp = stops.map(stop => this.toStopHttp(stop, vesselId))
     return this.httpClient.delete(
       `${this.apiUrl}/rest/v1/stops?vesselId=eq.${vesselId}&dateIn=is.null&dateOut=is.null`

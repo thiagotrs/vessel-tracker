@@ -33,7 +33,7 @@ export class AuthService {
     return this._error.asObservable()
   }
 
-  autoGuardLogin(): Observable<boolean> {
+  autoLogin(): Observable<boolean> {
     return this._isFirstLoading.asObservable().pipe(
       mergeMap(flag => {
         if (!flag) return of(true)
@@ -54,17 +54,6 @@ export class AuthService {
     )
   }
 
-  autoLogin(): void {
-    this.apiService.verifyUser().subscribe({
-      next: user => {
-        this._user.next(user)
-        this._isAuth.next(true)
-        this._error.next(null)
-      },
-      error: () => this._isAuth.next(false)
-    })
-  }
-
   login({ email, pass }: { email: string, pass: string }): void {
     this.apiService.signIn({ email, pass }).subscribe({
       next: user => {
@@ -73,7 +62,7 @@ export class AuthService {
         this._error.next(null)
       },
       complete: () => this.router.navigate(["/home"]),
-      error: err => this._error.next(err)
+      error: err => this._error.next("Invalid credentials.")
     })
   }
 
@@ -94,12 +83,12 @@ export class AuthService {
         this._error.next(null)
       },
       complete: () => this.router.navigate(["/home"]),
-      error: err => this._error.next(err)
+      error: err => this._error.next("User already exists.")
     })
   }
 
   cleanError(): void {
     this._error.next(null)
   }
-  
+
 }
