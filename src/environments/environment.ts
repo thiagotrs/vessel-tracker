@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  supabaseApiURL: "https://xhlflxqszoyxrxusvlip.supabase.co",
-  supabaseApiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MDIyMzk1NiwiZXhwIjoxOTU1Nzk5OTU2fQ._WLKCC3u2ODjoiAH8jxhu-1j9kHIXfHU5cOMP3TEzlM"
+  apiURL: "https://xhlflxqszoyxrxusvlip.supabase.co",
+  apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MDIyMzk1NiwiZXhwIjoxOTU1Nzk5OTU2fQ._WLKCC3u2ODjoiAH8jxhu-1j9kHIXfHU5cOMP3TEzlM"
 };
 
 /*

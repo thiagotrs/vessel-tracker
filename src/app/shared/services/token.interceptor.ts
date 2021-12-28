@@ -18,7 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
     const authReq = request.clone({
       headers: request.headers.set('Authorization', `Bearer ${authToken}`)
-                              .set('apikey', environment.supabaseApiKey)
+                              .set('apikey', environment.apiKey)
                               .set('Content-Type', 'application/json')
                               .set('Prefer', 'return=representation')
     })

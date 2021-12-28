@@ -40,9 +40,7 @@ interface VesselHttp {
 })
 export class ApiService {
 
-  private readonly apiUrl = environment.supabaseApiURL
-
-  private readonly mergeReturn = { headers: new HttpHeaders().set('Prefer', 'resolution=merge-duplicates') }
+  private readonly apiUrl = environment.apiURL
 
   constructor(private httpClient: HttpClient) { }
 
