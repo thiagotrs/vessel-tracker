@@ -14,10 +14,10 @@ jobs:
         run: |
           npm install
           npm run build -- --base-href=/vessel-tracker/
-          cp dist/vessel-tracking/index.html dist/vessel-tracking/404.html
+          cp dist/vessel-tracker/index.html dist/vessel-tracker/404.html
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.7
         with:
           branch: gh-pages
-          folder: dist/vessel-tracking
+          folder: dist/vessel-tracker
