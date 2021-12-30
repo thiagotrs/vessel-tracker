@@ -1,3 +1,5 @@
 <h1 class="text-center">⚓ Port</h1>
-<a app-button outline size="large" [routerLink]="['/port', 'add']">⚓ New Port</a>
+<a app-button outline size="large" [routerLink]="['/port', 'add']"
+  >⚓ New Port</a
+>
 <app-ports-list [ports]="(ports$ | async) || []"></app-ports-list>

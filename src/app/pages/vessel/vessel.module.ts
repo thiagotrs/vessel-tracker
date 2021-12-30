@@ -27,7 +27,7 @@ const vesselRoutes: Routes = [
     children: [
       {
         path: '',
-        component: VesselListComponent,
+        component: VesselListComponent
       },
       {
         path: 'add',
@@ -35,7 +35,7 @@ const vesselRoutes: Routes = [
       },
       {
         path: ':id',
-        component: VesselDetailComponent,
+        component: VesselDetailComponent
       },
       { path: '**', redirectTo: '/home' }
     ]
@@ -64,6 +64,6 @@ const vesselRoutes: Routes = [
     VesselsListModule,
     VesselHeroModule,
     SpinnerModule
-  ],
+  ]
 })
-export class VesselModule { }
+export class VesselModule {}

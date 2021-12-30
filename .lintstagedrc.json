@@ -1,0 +1,5 @@
+{
+  "*.{html,ts}": [
+    "npm run lint:fix"
+  ]
+}

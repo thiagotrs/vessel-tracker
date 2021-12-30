@@ -4,17 +4,9 @@ import { VesselHeroComponent } from './vessel-hero.component';
 import { HeroModule } from '../hero/hero.module';
 import { BadgeModule } from '../badge/badge.module';
 
-
-
 @NgModule({
   declarations: [VesselHeroComponent],
-  imports: [
-    CommonModule,
-    HeroModule,
-    BadgeModule
-  ],
-  exports: [
-    VesselHeroComponent
-  ]
+  imports: [CommonModule, HeroModule, BadgeModule],
+  exports: [VesselHeroComponent]
 })
-export class VesselHeroModule { }
+export class VesselHeroModule {}

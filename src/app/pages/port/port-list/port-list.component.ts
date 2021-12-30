@@ -9,15 +9,13 @@ import { PortService } from 'src/app/shared/services/port.service';
   styles: []
 })
 export class PortListComponent implements OnInit {
-
-  ports$: Observable<Port[]>
+  ports$: Observable<Port[]>;
 
   constructor(private portService: PortService) {
-    this.ports$ = this.portService.ports$
+    this.ports$ = this.portService.ports$;
   }
 
   ngOnInit(): void {
-    this.portService.loadPorts()
+    this.portService.loadPorts();
   }
-
 }

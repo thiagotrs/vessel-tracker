@@ -9,15 +9,13 @@ import { VesselService } from 'src/app/shared/services/vessel.service';
   styles: []
 })
 export class RoutePlanVesselsComponent implements OnInit {
-
-  vessels$: Observable<Vessel[]>
+  vessels$: Observable<Vessel[]>;
 
   constructor(private vesselService: VesselService) {
-    this.vessels$ = this.vesselService.vessels$
+    this.vessels$ = this.vesselService.vessels$;
   }
 
   ngOnInit(): void {
-    this.vesselService.loadVessels()
+    this.vesselService.loadVessels();
   }
-
 }

@@ -100,9 +100,21 @@
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "vessel-tracking"
+  "defaultProject": "vessel-tracking",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

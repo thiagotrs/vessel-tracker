@@ -1,39 +1,26 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-confirm-modal',
-  template: `
-    <app-modal (onClose)="deny()" [title]="title">
-      <p modal-body>{{message}}</p>
-      <ng-container modal-footer>
-        <button type="button" (click)="deny()" class="btn btn-secondary" data-bs-dismiss="modal">{{ denyTitle }}</button>
-        <button type="button" (click)="confirm()" class="btn btn-primary">{{ confirmTitle }}</button>
-      </ng-container>
-    </app-modal>
-  `,
+  templateUrl: './confirm-modal.html',
   styles: []
 })
-export class ConfirmModalComponent implements OnInit {
+export class ConfirmModalComponent {
+  @Input() title: string = '';
+  @Input() message: string = '';
+  @Input() denyTitle: string = 'Close';
+  @Input() confirmTitle: string = 'Save changes';
 
-  @Input() title: string = ''
-  @Input() message:string = ''
-  @Input() denyTitle: string = 'Close'
-  @Input() confirmTitle: string = 'Save changes'
+  @Output() deny: EventEmitter<void> = new EventEmitter<void>();
+  @Output() confirm: EventEmitter<void> = new EventEmitter<void>();
 
-  @Output() onDeny: EventEmitter<void> = new EventEmitter<void>()
-  @Output() onConfirm: EventEmitter<void> = new EventEmitter<void>()
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
+  confirmAction() {
+    this.confirm.emit();
   }
 
-  confirm() {
-    this.onConfirm.emit();
+  denyAction() {
+    this.deny.emit();
   }
-
-  deny() {
-    this.onDeny.emit();
-  }
-
 }

@@ -18,7 +18,7 @@ import { VesselHeroModule } from 'src/app/shared/components/vessel-hero/vessel-h
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { SpinnerModule } from 'src/app/shared/components/spinner/spinner.module';
 
-const routePlanRoutes:Routes = [
+const routePlanRoutes: Routes = [
   {
     path: '',
     component: RoutePlanComponent,
@@ -35,7 +35,7 @@ const routePlanRoutes:Routes = [
       { path: '**', redirectTo: '/home' }
     ]
   }
-]
+];
 
 @NgModule({
   declarations: [
@@ -60,4 +60,4 @@ const routePlanRoutes:Routes = [
     SpinnerModule
   ]
 })
-export class RoutePlanModule { }
+export class RoutePlanModule {}

@@ -1,48 +1,56 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  Input
+} from '@angular/core';
 
 @Component({
-  selector: 'button[app-button], a[app-button], input[app-button][type=submit], input[app-button][type=button], input[app-button][type=reset], button[app-button]',
+  selector:
+    // eslint-disable-next-line @angular-eslint/component-selector
+    'button[app-button], a[app-button], input[app-button][type=submit], input[app-button][type=button], input[app-button][type=reset], button[app-button]',
   template: '<ng-content></ng-content>',
   styles: [],
-  host: {
-    'class': 'btn',
-    '[class.btn-primary]': "color === 'primary' && !outlineB",
-    '[class.btn-secondary]': "color === 'secondary' && !outlineB",
-    '[class.btn-success]': "color === 'success' && !outlineB",
-    '[class.btn-danger]': "color === 'danger' && !outlineB",
-    '[class.btn-warning]': "color === 'warning' && !outlineB",
-    '[class.btn-dark]': "color === 'dark' && !outlineB",
-    '[class.btn-outline-primary]': "color === 'primary' && outlineB",
-    '[class.btn-outline-secondary]': "color === 'secondary' && outlineB",
-    '[class.btn-outline-success]': "color === 'success' && outlineB",
-    '[class.btn-outline-danger]': "color === 'danger' && outlineB",
-    '[class.btn-outline-warning]': "color === 'warning' && outlineB",
-    '[class.btn-outline-dark]': "color === 'dark' && outlineB",
-    '[class.btn-lg]': "size === 'large'",
-    '[class.btn-sm]': "size === 'small'",
-    '[attr.role]': "elementTagName === 'A' ? 'button' : null"
-  },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ButtonComponent implements OnInit {
+export class ButtonComponent {
+  @Input() color:
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'dark' = 'primary';
 
-  @Input() color: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'dark' = 'primary'
-  
-  @Input() size?: 'large' | 'small'
-  
-  @Input() outline: '' | boolean = false
+  @Input() size?: 'large' | 'small';
 
-  get outlineB() {
-    return this.outline === '' || this.outline
+  @Input() outline: '' | boolean = false;
+
+  @HostBinding('class') get options() {
+    return {
+      btn: true,
+      'btn-primary': this.color === 'primary' && this.outline === false,
+      'btn-secondary': this.color === 'secondary' && this.outline === false,
+      'btn-success': this.color === 'success' && this.outline === false,
+      'btn-danger': this.color === 'danger' && this.outline === false,
+      'btn-warning': this.color === 'warning' && this.outline === false,
+      'btn-dark': this.color === 'dark' && this.outline === false,
+      'btn-outline-primary': this.color === 'primary' && this.outline !== false,
+      'btn-outline-secondary':
+        this.color === 'secondary' && this.outline !== false,
+      'btn-outline-success': this.color === 'success' && this.outline !== false,
+      'btn-outline-danger': this.color === 'danger' && this.outline !== false,
+      'btn-outline-warning': this.color === 'warning' && this.outline !== false,
+      'btn-outline-dark': this.color === 'dark' && this.outline !== false,
+      'btn-lg': this.size === 'large',
+      'btn-sm': this.size === 'small'
+    };
   }
 
-  private elementTagName:string
-
-  constructor(private elementRef: ElementRef) {
-    this.elementTagName = this.elementRef.nativeElement.tagName
+  @HostBinding('attr.role') get role() {
+    return this.elementRef.nativeElement.tagName === 'A' ? 'button' : null;
   }
 
-  ngOnInit(): void {
-  }
-
+  constructor(private elementRef: ElementRef) {}
 }

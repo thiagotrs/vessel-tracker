@@ -9,86 +9,89 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class AuthService {
+  private _user = new BehaviorSubject<User | null>(null);
+  private _isAuth = new BehaviorSubject<boolean>(false);
+  private _error = new BehaviorSubject<string | null>(null);
 
-  private _user = new BehaviorSubject<User | null>(null)
-  private _isAuth = new BehaviorSubject<boolean>(false)
-  private _error = new BehaviorSubject<string | null>(null)
+  private _isFirstLoading = new BehaviorSubject<boolean>(true);
 
-  private _isFirstLoading = new BehaviorSubject<boolean>(true)
-
-  constructor(
-    private router: Router,
-    private apiService: ApiService
-  ) { }
+  constructor(private router: Router, private apiService: ApiService) {}
 
   get user$(): Observable<User | null> {
-    return this._user.asObservable()
+    return this._user.asObservable();
   }
 
   get isAuth$(): Observable<boolean> {
-    return this._isAuth.asObservable()
+    return this._isAuth.asObservable();
   }
 
   get authError$(): Observable<string | null> {
-    return this._error.asObservable()
+    return this._error.asObservable();
   }
 
   autoLogin(): Observable<boolean> {
     return this._isFirstLoading.asObservable().pipe(
-      mergeMap(flag => {
-        if (!flag) return of(true)
+      mergeMap((flag) => {
+        if (!flag) return of(true);
         return this.apiService.verifyUser().pipe(
-          map(user => {
-            this._user.next(user)
-            this._isAuth.next(true)
-            this._error.next(null)
-            this._isFirstLoading.next(false)
-            return true
+          map((user) => {
+            this._user.next(user);
+            this._isAuth.next(true);
+            this._error.next(null);
+            this._isFirstLoading.next(false);
+            return true;
           }),
           catchError(() => {
-            this._isAuth.next(false)
-            return of(false)
+            this._isAuth.next(false);
+            return of(false);
           })
-        )
+        );
       })
-    )
+    );
   }
 
-  login({ email, pass }: { email: string, pass: string }): void {
+  login({ email, pass }: { email: string; pass: string }): void {
     this.apiService.signIn({ email, pass }).subscribe({
-      next: user => {
-        this._user.next(user)
-        this._isAuth.next(true)
-        this._error.next(null)
+      next: (user) => {
+        this._user.next(user);
+        this._isAuth.next(true);
+        this._error.next(null);
       },
-      complete: () => this.router.navigate(["/home"]),
-      error: err => this._error.next("Invalid credentials.")
-    })
+      complete: () => this.router.navigate(['/home']),
+      error: (err) => this._error.next('Invalid credentials.')
+    });
   }
 
-  logout():void {
+  logout(): void {
     this.apiService.logout().subscribe(() => {
-      this._user.next(null)
-      this._isAuth.next(false)
-      this._error.next(null)
-      this.router.navigate(["/"])
-    })
+      this._user.next(null);
+      this._isAuth.next(false);
+      this._error.next(null);
+      this.router.navigate(['/']);
+    });
   }
 
-  signup({ name, email, pass }: { name: string, email: string, pass: string }): void {
+  signup({
+    name,
+    email,
+    pass
+  }: {
+    name: string;
+    email: string;
+    pass: string;
+  }): void {
     this.apiService.signUp({ name, email, pass }).subscribe({
-      next: user => {
-        this._user.next(user)
-        this._isAuth.next(true)
-        this._error.next(null)
+      next: (user) => {
+        this._user.next(user);
+        this._isAuth.next(true);
+        this._error.next(null);
       },
-      complete: () => this.router.navigate(["/home"]),
-      error: err => this._error.next("User already exists.")
-    })
+      complete: () => this.router.navigate(['/home']),
+      error: (err) => this._error.next('User already exists.')
+    });
   }
 
   cleanError(): void {
-    this._error.next(null)
+    this._error.next(null);
   }
-
 }

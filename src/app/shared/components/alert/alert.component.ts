@@ -1,5 +1,18 @@
-import { animate, query, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  animate,
+  query,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  Output
+} from '@angular/core';
 
 @Component({
   selector: 'app-alert',
@@ -21,29 +34,22 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
       ])
     ])
   ],
-  host: {
-    '[@openClosed]': "",
-    '[@.disabled]': "disableAnimation"
-  },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AlertComponent implements OnInit {
+export class AlertComponent {
+  @Input() type: 'success' | 'danger' | 'warning' = 'warning';
 
-  @Input() type: 'success' | 'danger' | 'warning' = 'warning'
-  
-  @Input() message?: string = ''
+  @Input() message?: string = '';
 
-  @Input() disableAnimation: boolean = false
+  @HostBinding('@.disabled') @Input() disableAnimation: boolean = false;
 
-  @Output() onClose: EventEmitter<void> = new EventEmitter<void>()
+  @HostBinding('@openClosed') openClosed = '';
 
-  constructor() { }
+  @Output() closeAlert: EventEmitter<void> = new EventEmitter<void>();
 
-  ngOnInit(): void {
-  }
+  constructor() {}
 
   close() {
-    this.onClose.emit()
+    this.closeAlert.emit();
   }
-
 }

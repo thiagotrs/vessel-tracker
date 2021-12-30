@@ -1,32 +1,34 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Input
+} from '@angular/core';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'span[app-badge]',
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: '<ng-content></ng-content>',
   styles: [],
-  host: {
-    'class': 'badge',
-    '[class.btn-primary]': "color === 'primary'",
-    '[class.btn-secondary]': "color === 'secondary'",
-    '[class.btn-success]': "color === 'success'",
-    '[class.btn-danger]': "color === 'danger'",
-    '[class.btn-warning]': "color === 'warning'",
-    '[class.btn-dark]': "color === 'dark'",
-    '[class.rounded-pill]': "pill === '' || pill"
-  },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BadgeComponent implements OnInit {
+export class BadgeComponent {
+  @Input() color = 'primary';
 
-  @Input() color = 'primary'
+  @Input() pill: '' | boolean = false;
 
-  @Input() pill:'' | boolean = false
-
-  constructor() { }
-
-  ngOnInit(): void {
+  @HostBinding('class') get options() {
+    return {
+      badge: true,
+      'btn-primary': this.color === 'primary',
+      'btn-secondary': this.color === 'secondary',
+      'btn-success': this.color === 'success',
+      'btn-danger': this.color === 'danger',
+      'btn-warning': this.color === 'warning',
+      'btn-dark': this.color === 'dark',
+      'rounded-pill': this.pill === '' || this.pill
+    };
   }
 
+  constructor() {}
 }

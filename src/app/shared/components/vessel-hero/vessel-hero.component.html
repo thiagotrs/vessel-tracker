@@ -1,10 +1,14 @@
 <app-hero>
   <h1>
-    {{vessel.name}} 
-    <span app-badge [color]="vessel.status === 'Sailing' ? 'primary' : 'danger'">{{vessel.status}}</span>
+    {{ vessel.name }}
+    <span
+      app-badge
+      [color]="vessel.status === 'Sailing' ? 'primary' : 'danger'"
+      >{{ vessel.status }}</span
+    >
   </h1>
-  <p class="lead">{{vessel.ownership}}</p>
-  <p class="lead">{{vessel.year}}</p>
+  <p class="lead">{{ vessel.ownership }}</p>
+  <p class="lead">{{ vessel.year }}</p>
   <div class="d-grid gap-2 d-md-block">
     <ng-content></ng-content>
   </div>

@@ -14,53 +14,51 @@ import { VesselService } from 'src/app/shared/services/vessel.service';
   styles: []
 })
 export class VesselAddComponent implements OnInit {
+  status: Status[] = [Status.SAILING, Status.PARKED];
 
-  status:Status[] = [Status.SAILING, Status.PARKED]
+  ports$: Observable<Port[]>;
 
-  ports$: Observable<Port[]>
+  formatLocation(port: Port) {
+    return `${port.name} (${port.location.city}, ${port.location.country})`;
+  }
 
   constructor(
     private vesselService: VesselService,
     private portService: PortService,
     private portalService: PortalService
   ) {
-    this.ports$ = this.portService.ports$
+    this.ports$ = this.portService.ports$;
   }
 
   ngOnInit(): void {
-    this.portService.loadPorts()
+    this.portService.loadPorts();
   }
 
-  onSubmit(myForm:NgForm) {
+  onSubmit(myForm: NgForm) {
     this.openModal(() => {
-      const vessel = { name: myForm.form.value.name, ownership: myForm.form.value.ownership, year: myForm.form.value.year }  as Vessel
-      this.vesselService.createVessel(vessel, myForm.form.value.port)
+      const vessel = {
+        name: myForm.form.value.name,
+        ownership: myForm.form.value.ownership,
+        year: myForm.form.value.year
+      } as Vessel;
+      this.vesselService.createVessel(vessel, myForm.form.value.port);
     });
   }
 
-  clear(myForm:NgForm) {
-    myForm.resetForm({ port:'' })
+  clear(myForm: NgForm) {
+    myForm.resetForm({ port: '' });
   }
 
   openModal(saveFn: Function) {
-    const componentRef = this.portalService.open(ConfirmModalComponent)
+    const componentRef = this.portalService.open(ConfirmModalComponent);
     componentRef.title = 'Confirmation!';
-    componentRef.message = "Are you sure of add new vessel?";
-    componentRef.onDeny.subscribe(() => {
+    componentRef.message = 'Are you sure of add new vessel?';
+    componentRef.deny.subscribe(() => {
       this.portalService.close();
-    })
-    componentRef.onConfirm.subscribe(() => {
+    });
+    componentRef.confirm.subscribe(() => {
       saveFn();
       this.portalService.close();
-    })
-
-    // const alertModalFactory = this.componentFactoryResolver.resolveComponentFactory(ModalComponent)
-    // this.alertModal.clear()
-    // const alertModalRef = this.alertModal.createComponent(alertModalFactory)
-    // alertModalRef.instance.title = 'teste';
-    // alertModalRef.instance.message = "isso é um teste"
-    // alertModalRef.instance.onClose.subscribe(() => {console.log('close button was clicked')})
-    // alertModalRef.instance.onSave.subscribe(() => {console.log('save button was clicked')})
+    });
   }
-
 }

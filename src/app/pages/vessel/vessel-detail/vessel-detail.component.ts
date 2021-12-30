@@ -11,41 +11,39 @@ import { DockActions } from '../components/dock-button/dock-button.component';
   styles: []
 })
 export class VesselDetailComponent implements OnInit, OnDestroy {
+  private id: string;
 
-  private id:string
+  vessel!: Vessel;
+  isLoading$: Observable<boolean>;
 
-  vessel!: Vessel
-  isLoading$: Observable<boolean>
-  
-  private subs = new Subscription()
+  private subs = new Subscription();
 
   constructor(
     private vesselService: VesselService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {
     this.id = this.route.snapshot.paramMap.get('id') || '';
-    this.isLoading$ = this.vesselService.isLoading$
+    this.isLoading$ = this.vesselService.isLoading$;
   }
 
   ngOnInit(): void {
-    this.vesselService.loadVesselById(this.id)
+    this.vesselService.loadVesselById(this.id);
     this.subs.add(
-      this.vesselService.selectedVessel$.subscribe(vessel => {
-        this.vessel = vessel as Vessel
+      this.vesselService.selectedVessel$.subscribe((vessel) => {
+        this.vessel = vessel as Vessel;
       })
-    )
+    );
   }
 
   toggleDock(actionType: DockActions) {
-    if(actionType === DockActions.DOCK) {
-      this.subs.add(this.vesselService.dockVessel(this.id))
-    } else if(actionType === DockActions.UNDOCK) {
-      this.subs.add(this.vesselService.unDockVessel(this.id))
+    if (actionType === DockActions.DOCK) {
+      this.subs.add(this.vesselService.dockVessel(this.id));
+    } else if (actionType === DockActions.UNDOCK) {
+      this.subs.add(this.vesselService.unDockVessel(this.id));
     }
   }
 
   ngOnDestroy(): void {
-    this.subs.unsubscribe()
+    this.subs.unsubscribe();
   }
-  
 }

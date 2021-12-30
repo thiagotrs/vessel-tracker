@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 import { Port } from 'src/app/core/models/port.model';
 
 @Component({
@@ -7,19 +13,14 @@ import { Port } from 'src/app/core/models/port.model';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PortsListComponent implements OnInit {
+export class PortsListComponent {
+  @Input() ports!: Port[];
 
-  @Input() ports!:Port[]
+  @Output() delete: EventEmitter<number> = new EventEmitter<number>();
 
-  @Output() onDelete: EventEmitter<number> = new EventEmitter<number>()
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  constructor() {}
 
   remove(id: number) {
-    this.onDelete.emit(id)
+    this.delete.emit(id);
   }
-
 }

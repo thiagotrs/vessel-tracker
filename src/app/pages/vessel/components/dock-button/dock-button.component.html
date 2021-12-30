@@ -1,7 +1,9 @@
-<button 
-    type="button" 
-    app-button
-    size="large"
-    [color]="status ? 'success' : 'warning'"
-    (click)="toggle()"
->{{ status ? 'Dock' : 'UnDock' }}</button>
+<button
+  type="button"
+  app-button
+  size="large"
+  [color]="status ? 'success' : 'warning'"
+  (click)="toggleAction()"
+>
+  {{ status ? 'Dock' : 'UnDock' }}
+</button>

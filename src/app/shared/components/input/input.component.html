@@ -1,14 +1,20 @@
 <label for="input-text" class="form-label">{{ label }}:</label>
-<input 
-    type="text" 
-    class="form-control form-control-lg" 
-    id="input-text" 
-    name="input-text" 
-    aria-describedby="help" 
-    [(ngModel)]="input" 
-    #text="ngModel" 
-    (ngModelChange)="onChange($event)" 
-    (blur)="onTouch()" 
-    [disabled]="disabled === '' || disabled" 
+<input
+  type="text"
+  class="form-control form-control-lg"
+  id="input-text"
+  name="input-text"
+  aria-describedby="help"
+  [(ngModel)]="input"
+  #text="ngModel"
+  (ngModelChange)="onChange($event)"
+  (blur)="onTouch()"
+  [disabled]="disabled === '' || disabled"
 />
-<div id="help" class="text-danger" *ngIf="text.invalid && (text.dirty || text.touched)">{{ errorMessage }}</div>
+<div
+  id="help"
+  class="text-danger"
+  *ngIf="text.invalid && (text.dirty || text.touched)"
+>
+  {{ errorMessage }}
+</div>

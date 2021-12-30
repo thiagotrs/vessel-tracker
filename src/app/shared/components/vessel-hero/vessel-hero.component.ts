@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Vessel } from 'src/app/core/models/vessel.model';
-
-
 
 @Component({
   selector: 'app-vessel-hero',
@@ -9,13 +7,8 @@ import { Vessel } from 'src/app/core/models/vessel.model';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VesselHeroComponent implements OnInit {
+export class VesselHeroComponent {
+  @Input() vessel!: Vessel;
 
-  @Input() vessel!: Vessel
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  constructor() {}
 }

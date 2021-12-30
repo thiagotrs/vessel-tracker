@@ -6,13 +6,11 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { RouterModule, Routes } from '@angular/router';
 
 const notFoundRoutes: Routes = [
-  { path: 'not-found', component: NotFoundComponent },
+  { path: 'not-found', component: NotFoundComponent }
 ];
 
 @NgModule({
-  declarations: [
-    NotFoundComponent
-  ],
+  declarations: [NotFoundComponent],
   imports: [
     CommonModule,
     HeaderModule,
@@ -20,4 +18,4 @@ const notFoundRoutes: Routes = [
     RouterModule.forChild(notFoundRoutes)
   ]
 })
-export class NotFoundModule { }
+export class NotFoundModule {}

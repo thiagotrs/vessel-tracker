@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Stop } from 'src/app/core/models/vessel.model';
 
 @Component({
@@ -7,13 +7,8 @@ import { Stop } from 'src/app/core/models/vessel.model';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StopComponent implements OnInit {
+export class StopComponent {
+  @Input() stop!: Stop;
 
-  @Input() stop!: Stop
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  constructor() {}
 }

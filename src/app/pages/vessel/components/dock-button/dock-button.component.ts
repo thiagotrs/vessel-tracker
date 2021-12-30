@@ -1,8 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 
 export enum DockActions {
-  DOCK = "dock",
-  UNDOCK = "undock",
+  DOCK = 'dock',
+  UNDOCK = 'undock'
 }
 
 @Component({
@@ -11,23 +17,18 @@ export enum DockActions {
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DockButtonComponent implements OnInit {
+export class DockButtonComponent {
+  @Input() status: boolean = true;
 
-  @Input() status:boolean = true
+  @Output() toggle = new EventEmitter<DockActions>();
 
-  @Output() onToggle = new EventEmitter<DockActions>()
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-  toggle() {
-    if(this.status) {
-      this.onToggle.emit(DockActions.DOCK);
+  toggleAction() {
+    if (this.status) {
+      this.toggle.emit(DockActions.DOCK);
     } else {
-      this.onToggle.emit(DockActions.UNDOCK);
-    }    
+      this.toggle.emit(DockActions.UNDOCK);
+    }
   }
-
 }

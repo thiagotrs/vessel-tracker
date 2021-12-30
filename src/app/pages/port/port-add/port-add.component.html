@@ -4,29 +4,103 @@
   <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="w-100">
     <div class="mb-3">
       <label for="name" class="form-label">Name:</label>
-      <input class="form-control form-control-lg" type="text" id="name" name="name" required aria-describedby="nameHelp" ngModel #name="ngModel">
-      <div id="nameHelp" class="text-danger" *ngIf="name.invalid && (name.dirty || name.touched)">Name is required</div>
+      <input
+        class="form-control form-control-lg"
+        type="text"
+        id="name"
+        name="name"
+        required
+        aria-describedby="nameHelp"
+        ngModel
+        #name="ngModel"
+      />
+      <div
+        id="nameHelp"
+        class="text-danger"
+        *ngIf="name.invalid && (name.dirty || name.touched)"
+      >
+        Name is required
+      </div>
     </div>
     <div ngModelGroup="location">
       <div class="mb-3">
         <label for="city" class="form-label">City:</label>
-        <input class="form-control form-control-lg" type="text" id="city" name="city" required aria-describedby="cityHelp" ngModel #city="ngModel">
-        <div id="cityHelp" class="text-danger" *ngIf="city.invalid && (city.dirty || city.touched)">City is required</div>
+        <input
+          class="form-control form-control-lg"
+          type="text"
+          id="city"
+          name="city"
+          required
+          aria-describedby="cityHelp"
+          ngModel
+          #city="ngModel"
+        />
+        <div
+          id="cityHelp"
+          class="text-danger"
+          *ngIf="city.invalid && (city.dirty || city.touched)"
+        >
+          City is required
+        </div>
       </div>
       <div class="mb-3">
         <label for="country" class="form-label">Country:</label>
-        <input class="form-control form-control-lg" type="text" id="country" name="country" required aria-describedby="countryHelp" ngModel #country="ngModel">
-        <div id="countryHelp" class="text-danger" *ngIf="country.invalid && (country.dirty || country.touched)">Country is required</div>
+        <input
+          class="form-control form-control-lg"
+          type="text"
+          id="country"
+          name="country"
+          required
+          aria-describedby="countryHelp"
+          ngModel
+          #country="ngModel"
+        />
+        <div
+          id="countryHelp"
+          class="text-danger"
+          *ngIf="country.invalid && (country.dirty || country.touched)"
+        >
+          Country is required
+        </div>
       </div>
     </div>
     <div class="mb-3">
       <label for="capacity" class="form-label">Capacity:</label>
-      <input class="form-control form-control-lg" type="number" min="1" max="100000" id="capacity" name="capacity" required aria-describedby="capacityHelp" ngModel #capacity="ngModel">
-      <div id="capacityHelp" class="text-danger" *ngIf="capacity.invalid && (capacity.dirty || capacity.touched)">Capacity is required</div>
+      <input
+        class="form-control form-control-lg"
+        type="number"
+        min="1"
+        max="100000"
+        id="capacity"
+        name="capacity"
+        required
+        aria-describedby="capacityHelp"
+        ngModel
+        #capacity="ngModel"
+      />
+      <div
+        id="capacityHelp"
+        class="text-danger"
+        *ngIf="capacity.invalid && (capacity.dirty || capacity.touched)"
+      >
+        Capacity is required
+      </div>
     </div>
     <div class="d-grid gap-2 d-md-flex">
-      <button type="submit" class="btn btn-lg btn-primary" [disabled]="myForm.invalid">Save</button>
-      <button type="button" (click)="clear(myForm)" class="btn btn-lg btn-outline-primary">Clear</button>
+      <button
+        type="submit"
+        class="btn btn-lg btn-primary"
+        [disabled]="myForm.invalid"
+      >
+        Save
+      </button>
+      <button
+        type="button"
+        (click)="clear(myForm)"
+        class="btn btn-lg btn-outline-primary"
+      >
+        Clear
+      </button>
     </div>
   </form>
 </div>

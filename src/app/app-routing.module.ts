@@ -6,24 +6,24 @@ import { AuthGuard } from './shared/services/auth.guard';
 
 const routes: Routes = [
   { path: '', component: LandingComponent },
-  { 
-    path: 'home', 
-    component: HomeComponent, 
-    canActivate:[AuthGuard]
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'route-plan', 
-    loadChildren: () => import('./pages/route-plan/route-plan.module').then(m => m.RoutePlanModule),
-    canLoad: [AuthGuard],
+  {
+    path: 'route-plan',
+    loadChildren: () =>
+      import('./pages/route-plan/route-plan.module').then(
+        (m) => m.RoutePlanModule
+      ),
+    canLoad: [AuthGuard]
   },
-  { path: '**', redirectTo: '/' },
-
+  { path: '**', redirectTo: '/' }
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes),
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

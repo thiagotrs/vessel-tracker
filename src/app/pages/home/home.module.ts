@@ -6,20 +6,9 @@ import { RouterModule } from '@angular/router';
 import { HeroModule } from 'src/app/shared/components/hero/hero.module';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 
-
 @NgModule({
-  declarations: [
-    HomeComponent,
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    HeaderModule,
-    HeroModule,
-    ButtonModule
-  ],
-  exports: [
-    HomeComponent
-  ]
+  declarations: [HomeComponent],
+  imports: [CommonModule, RouterModule, HeaderModule, HeroModule, ButtonModule],
+  exports: [HomeComponent]
 })
-export class HomeModule { }
+export class HomeModule {}

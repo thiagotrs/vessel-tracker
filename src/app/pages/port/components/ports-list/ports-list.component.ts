@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Port } from 'src/app/core/models/port.model';
 
 @Component({
@@ -7,13 +7,8 @@ import { Port } from 'src/app/core/models/port.model';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PortsListComponent implements OnInit {
+export class PortsListComponent {
+  @Input() ports!: Port[];
 
-  @Input() ports!:Port[]
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  constructor() {}
 }

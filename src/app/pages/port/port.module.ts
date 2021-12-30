@@ -19,7 +19,7 @@ const portRoutes: Routes = [
     children: [
       {
         path: '',
-        component: PortListComponent,
+        component: PortListComponent
       },
       {
         path: 'add',
@@ -46,4 +46,4 @@ const portRoutes: Routes = [
     ButtonModule
   ]
 })
-export class PortModule { }
+export class PortModule {}

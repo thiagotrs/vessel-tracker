@@ -16,17 +16,13 @@ const routes: Routes = [
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'signup', component: SignupComponent },
-      { path: '**', redirectTo: 'login' },
+      { path: '**', redirectTo: 'login' }
     ]
   }
 ];
 
 @NgModule({
-  declarations: [
-    AuthComponent,
-    LoginComponent,
-    SignupComponent
-  ],
+  declarations: [AuthComponent, LoginComponent, SignupComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -35,4 +31,4 @@ const routes: Routes = [
   ],
   providers: [AuthGuard]
 })
-export class AuthModule { }
+export class AuthModule {}

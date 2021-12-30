@@ -1,20 +1,82 @@
-<form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)" class=" mb-3">
-  <app-alert type="warning" [message]="alert || ''" (onClose)="closeAlert(); signupForm.resetForm()" *ngIf="(alertMessage$ | async) as alert"></app-alert>
+<form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)" class="mb-3">
+  <app-alert
+    type="warning"
+    [message]="alert || ''"
+    (closeAlert)="closeAlert(); signupForm.resetForm()"
+    *ngIf="alertMessage$ | async as alert"
+  ></app-alert>
   <div class="mb-2">
     <label class="form-label fs-5" for="name">Name:</label>
-    <input type="text" class="form-control p-3" id="name" name="name" placeholder="Name" required ngModel #name="ngModel" aria-describedby="nameHelp">
-    <div id="nameHelp" class="text-danger" *ngIf="name.invalid && (name.dirty || name.touched)">Name is required</div>
+    <input
+      type="text"
+      class="form-control p-3"
+      id="name"
+      name="name"
+      placeholder="Name"
+      required
+      ngModel
+      #name="ngModel"
+      aria-describedby="nameHelp"
+    />
+    <div
+      id="nameHelp"
+      class="text-danger"
+      *ngIf="name.invalid && (name.dirty || name.touched)"
+    >
+      Name is required
+    </div>
   </div>
   <div class="mb-2">
     <label class="form-label fs-5" for="email">Email:</label>
-    <input type="email" email class="form-control p-3" id="email" name="email" placeholder="name@example.com" required ngModel #email="ngModel" aria-describedby="emailHelp">
-    <div id="emailHelp" class="text-danger" *ngIf="email.invalid && (email.dirty || email.touched)">Email is required</div>
+    <input
+      type="email"
+      email
+      class="form-control p-3"
+      id="email"
+      name="email"
+      placeholder="name@example.com"
+      required
+      ngModel
+      #email="ngModel"
+      aria-describedby="emailHelp"
+    />
+    <div
+      id="emailHelp"
+      class="text-danger"
+      *ngIf="email.invalid && (email.dirty || email.touched)"
+    >
+      Email is required
+    </div>
   </div>
   <div class="mb-2">
     <label class="form-label fs-5" for="pass">Password:</label>
-    <input type="password" class="form-control p-3" id="pass" name="pass" placeholder="Password" required ngModel #pass="ngModel" aria-describedby="passHelp">
-    <div id="passHelp" class="text-danger" *ngIf="pass.invalid && (pass.dirty || pass.touched)">Password is required</div>
+    <input
+      type="password"
+      class="form-control p-3"
+      id="pass"
+      name="pass"
+      placeholder="Password"
+      required
+      ngModel
+      #pass="ngModel"
+      aria-describedby="passHelp"
+    />
+    <div
+      id="passHelp"
+      class="text-danger"
+      *ngIf="pass.invalid && (pass.dirty || pass.touched)"
+    >
+      Password is required
+    </div>
   </div>
-  <button class="w-100 btn btn-lg btn-dark" type="submit" [disabled]="signupForm.invalid">Sign up</button>
+  <button
+    class="w-100 btn btn-lg btn-dark"
+    type="submit"
+    [disabled]="signupForm.invalid"
+  >
+    Sign up
+  </button>
 </form>
-<p class="fs-4 fw-bold">👉 <a routerLink="/auth/login" class="link-dark">Log in</a></p>
+<p class="fs-4 fw-bold">
+  👉 <a routerLink="/auth/login" class="link-dark">Log in</a>
+</p>

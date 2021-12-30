@@ -10,19 +10,22 @@ import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-
   constructor() {}
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const authToken = localStorage.getItem('token')
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
+    const authToken = localStorage.getItem('token');
 
     const authReq = request.clone({
-      headers: request.headers.set('Authorization', `Bearer ${authToken}`)
-                              .set('apikey', environment.apiKey)
-                              .set('Content-Type', 'application/json')
-                              .set('Prefer', 'return=representation')
-    })
+      headers: request.headers
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('apikey', environment.apiKey)
+        .set('Content-Type', 'application/json')
+        .set('Prefer', 'return=representation')
+    });
 
-    return next.handle(authReq)
+    return next.handle(authReq);
   }
 }

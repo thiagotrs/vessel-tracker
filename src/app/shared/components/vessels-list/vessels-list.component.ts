@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Vessel } from 'src/app/core/models/vessel.model';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Stop, Vessel } from 'src/app/core/models/vessel.model';
 
 @Component({
   selector: 'app-vessels-list',
@@ -7,13 +7,13 @@ import { Vessel } from 'src/app/core/models/vessel.model';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VesselsListComponent implements OnInit {
+export class VesselsListComponent {
+  @Input() vessels: Vessel[] = [];
 
-  @Input() vessels: Vessel[] = []
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
+  filterLastPort(stops: Stop[]): string {
+    if (!stops.length) return 'none';
+    return stops[stops.length - 1].port.name;
   }
-
 }

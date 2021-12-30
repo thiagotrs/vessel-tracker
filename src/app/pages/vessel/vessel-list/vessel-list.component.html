@@ -1,3 +1,5 @@
 <h1 class="text-center">🚢 Vessels</h1>
-<a app-button size="large" outline [routerLink]="['/vessel', 'add']">🚢 New Vessel</a>
+<a app-button size="large" outline [routerLink]="['/vessel', 'add']"
+  >🚢 New Vessel</a
+>
 <app-vessels-list [vessels]="(vessels$ | async) || []"></app-vessels-list>

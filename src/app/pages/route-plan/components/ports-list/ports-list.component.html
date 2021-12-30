@@ -1,11 +1,19 @@
 <app-list-group>
-  <app-list-item *ngFor="let port of ports; let idx=index">
+  <app-list-item *ngFor="let port of ports; let idx = index">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">📍 {{port.name}}</h5>
-      <button class="btn btn-outline-danger" type="button" (click)="remove(idx)">Delete</button>
+      <h5 class="mb-1">📍 {{ port.name }}</h5>
+      <button
+        class="btn btn-outline-danger"
+        type="button"
+        (click)="remove(idx)"
+      >
+        Delete
+      </button>
     </div>
-    <p class="mb-1">{{port.location.city + ', ' + port.location.country}}</p>
-    <div class="fw-bold fst-italic">Capacity: {{port.capacity}}</div>
-    <small class="text-muted" *ngIf="port.location.point">{{port.location.point}}</small>
+    <p class="mb-1">{{ port.location.city + ', ' + port.location.country }}</p>
+    <div class="fw-bold fst-italic">Capacity: {{ port.capacity }}</div>
+    <small class="text-muted" *ngIf="port.location.point">{{
+      port.location.point
+    }}</small>
   </app-list-item>
 </app-list-group>

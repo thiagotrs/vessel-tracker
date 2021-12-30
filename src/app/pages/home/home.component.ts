@@ -13,26 +13,24 @@ import { VesselService } from 'src/app/shared/services/vessel.service';
   styles: []
 })
 export class HomeComponent implements OnInit {
-
-  user$: Observable<User | null>
-  isAuth$: Observable<boolean>
-  trackedVessels$: Observable<Vessel[]>
-  trackedPorts$: Observable<Port[]>
+  user$: Observable<User | null>;
+  isAuth$: Observable<boolean>;
+  trackedVessels$: Observable<Vessel[]>;
+  trackedPorts$: Observable<Port[]>;
 
   constructor(
-    private authService:AuthService,
-    private vesselService:VesselService,
-    private portService:PortService
+    private authService: AuthService,
+    private vesselService: VesselService,
+    private portService: PortService
   ) {
-    this.isAuth$ = this.authService.isAuth$
-    this.user$ = this.authService.user$
-    this.trackedVessels$ = this.vesselService.vessels$
-    this.trackedPorts$ = this.portService.ports$
+    this.isAuth$ = this.authService.isAuth$;
+    this.user$ = this.authService.user$;
+    this.trackedVessels$ = this.vesselService.vessels$;
+    this.trackedPorts$ = this.portService.ports$;
   }
 
   ngOnInit(): void {
-    this.portService.loadPorts()
-    this.vesselService.loadVessels()
+    this.portService.loadPorts();
+    this.vesselService.loadVessels();
   }
-
 }
