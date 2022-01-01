@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { AlertModule } from 'src/app/shared/components/alert/alert.module';
 import { AuthGuard } from './auth.guard';
+import { ButtonModule } from 'src/app/shared/components/button/button.module';
 
 const routes: Routes = [
   {
@@ -27,7 +28,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     RouterModule.forChild(routes),
-    AlertModule
+    AlertModule,
+    ButtonModule
   ],
   providers: [AuthGuard]
 })
