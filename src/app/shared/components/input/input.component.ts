@@ -1,43 +1,15 @@
-import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, ElementRef, HostBinding } from '@angular/core';
 
 @Component({
-  selector: 'app-input',
-  templateUrl: './input.component.html',
-  styles: [],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => InputComponent),
-      multi: true
-    }
-  ]
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'input[app-input]',
+  template: '<ng-content></ng-content>',
+  styles: []
 })
-export class InputComponent implements ControlValueAccessor {
-  input: string = '';
+export class InputComponent {
+  @HostBinding('class') option = 'form-control form-control-lg';
+  @HostBinding('attr.aria-describedby') aria =
+    this.elementRef.nativeElement.id + 'Help';
 
-  @Input() disabled: '' | boolean = false;
-  @Input() label: string = '';
-  @Input() errorMessage: string = '';
-
-  constructor() {}
-
-  onChange: any = () => {};
-  onTouch: any = () => {};
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouch = fn;
-  }
-
-  writeValue(input: string) {
-    this.input = input;
-  }
-
-  setDisabledState(disabled: boolean) {
-    this.disabled = disabled;
-  }
+  constructor(private elementRef: ElementRef) {}
 }

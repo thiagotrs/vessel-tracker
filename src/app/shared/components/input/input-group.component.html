@@ -1,0 +1,25 @@
+<label [for]="inputId" class="form-label">{{ label }}:</label>
+<ng-content></ng-content>
+<ng-container *ngIf="field">
+  <div
+    [id]="inputId + 'help'"
+    class="text-danger"
+    *ngIf="field.invalid && (field.dirty || field.touched)"
+  >
+    <div *ngIf="field.errors?.['required']">{{ label }} is required.</div>
+    <div *ngIf="field.errors?.['min']">
+      Min value: {{ field.errors?.['min']['min'] }}
+    </div>
+    <div *ngIf="field.errors?.['max']">
+      Max value: {{ field.errors?.['max']['max'] }}
+    </div>
+    <div *ngIf="field.errors?.['minlength']">
+      Min length:
+      {{ field.errors?.['minlength']['requiredLength'] }}
+    </div>
+    <div *ngIf="field.errors?.['maxlength']">
+      Max length:
+      {{ field.errors?.['maxlength']['requiredLength'] }}
+    </div>
+  </div>
+</ng-container>
