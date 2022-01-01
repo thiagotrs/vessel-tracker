@@ -1,11 +1,9 @@
 <app-hero>
   <h1>
     {{ vessel.name }}
-    <span
-      app-badge
-      [color]="vessel.status === 'Sailing' ? 'primary' : 'danger'"
-      >{{ vessel.status }}</span
-    >
+    <span app-badge [color]="isSailing(vessel) ? 'primary' : 'danger'">{{
+      vessel.status
+    }}</span>
   </h1>
   <p class="lead">{{ vessel.ownership }}</p>
   <p class="lead">{{ vessel.year }}</p>

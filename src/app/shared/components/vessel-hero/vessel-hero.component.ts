@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Vessel } from 'src/app/core/models/vessel.model';
+import { Status, Vessel } from 'src/app/core/models/vessel.model';
 
 @Component({
   selector: 'app-vessel-hero',
@@ -9,6 +9,10 @@ import { Vessel } from 'src/app/core/models/vessel.model';
 })
 export class VesselHeroComponent {
   @Input() vessel!: Vessel;
+
+  isSailing(vessel: Vessel): boolean {
+    return vessel.status === Status.SAILING;
+  }
 
   constructor() {}
 }
