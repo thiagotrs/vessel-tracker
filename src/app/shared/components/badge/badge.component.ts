@@ -13,7 +13,13 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BadgeComponent {
-  @Input() color = 'primary';
+  @Input() color:
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'dark' = 'primary';
 
   @Input() pill: '' | boolean = false;
 
