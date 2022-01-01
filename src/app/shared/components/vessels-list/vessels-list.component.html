@@ -6,11 +6,9 @@
   >
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">⚓ {{ vessel.name }}</h5>
-      <span
-        app-badge
-        [color]="vessel.status === 'Sailing' ? 'primary' : 'danger'"
-        >{{ vessel.status }}</span
-      >
+      <span app-badge [color]="isSailing(vessel) ? 'primary' : 'danger'">{{
+        vessel.status
+      }}</span>
     </div>
     <p class="mb-1">{{ vessel.ownership }}</p>
     <div class="fw-bold fst-italic">
