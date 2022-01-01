@@ -106,7 +106,7 @@ export class VesselService implements OnDestroy {
           }),
           concatMap((updatedVessel) =>
             this.apiService
-              .updateVessel(updatedVessel.nextStops[0], updatedVessel.id)
+              .updateVessel(updatedVessel.nextStops[0], updatedVessel)
               .pipe(map(() => updatedVessel))
           )
         )
@@ -145,7 +145,7 @@ export class VesselService implements OnDestroy {
             this.apiService
               .updateVessel(
                 updatedVessel.stops[updatedVessel.stops.length - 1],
-                updatedVessel.id
+                updatedVessel
               )
               .pipe(map(() => updatedVessel))
           )

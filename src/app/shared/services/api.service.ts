@@ -45,9 +45,9 @@ export class ApiService {
   private addPortUrl = `${this.apiUrl}/rest/v1/ports`;
   private getPortUrl = (id: string) =>
     `${this.apiUrl}/rest/v1/ports?id=eq.${id}`;
-  private getVesselsUrl = `${this.apiUrl}/rest/v1/vessels?select=*,stops(*, ports(*))`;
+  private getVesselsUrl = `${this.apiUrl}/rest/v1/vessels?select=*,stops(*,ports(*))`;
   private getVesselUrl = (id: string) =>
-    `${this.apiUrl}/rest/v1/vessels?id=eq.${id}&select=*,stops(*, ports(*))`;
+    `${this.apiUrl}/rest/v1/vessels?id=eq.${id}&select=*,stops(*,ports(*))`;
   private addVesselUrl = `${this.apiUrl}/rest/v1/vessels`;
   private addStopsUrl = `${this.apiUrl}/rest/v1/stops?select=*,ports(*)`;
   private updateStopUrl = (id: number) =>
@@ -186,11 +186,20 @@ export class ApiService {
       );
   }
 
-  updateVessel(stop: Stop, vesselId: string): Observable<Stop> {
-    const stopHttp = this.toStopHttp(stop, vesselId);
+  updateVessel(stop: Stop, vessel: Vessel): Observable<Stop> {
+    const stopHttp = this.toStopHttp(stop, vessel.id);
     return this.httpClient
-      .patch<StopHttp[]>(this.updateStopUrl(stop.id!), stopHttp)
-      .pipe(map((stops) => this.toStop(stops[0])));
+      .patch<VesselHttp>(
+        this.getVesselUrl(vessel.id),
+        this.toVesselHttp(vessel)
+      )
+      .pipe(
+        concatMap((vessel) =>
+          this.httpClient
+            .patch<StopHttp[]>(this.updateStopUrl(stop.id!), stopHttp)
+            .pipe(map((stops) => this.toStop(stops[0])))
+        )
+      );
   }
 
   updateAllStopsVessel(stops: Stop[], vesselId: string): Observable<Stop[]> {
