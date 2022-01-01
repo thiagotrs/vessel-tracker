@@ -58,10 +58,15 @@
       </ng-container>
       <ng-template #logoutArea>
         <div class="text-end ms-lg-auto">
-          <a routerLink="/auth/login" class="btn btn-outline-light me-2"
+          <a
+            routerLink="/auth/login"
+            app-button
+            outline
+            color="light"
+            class="me-2"
             >Login</a
           >
-          <a routerLink="/auth/signup" class="btn btn-warning">Sign-up</a>
+          <a routerLink="/auth/signup" app-button color="warning">Sign-up</a>
         </div>
       </ng-template>
     </div>

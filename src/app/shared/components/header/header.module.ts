@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header.component';
 import { RouterModule } from '@angular/router';
-import { ButtonModule } from 'src/app/shared/components/button/button.module';
+import { ButtonModule } from '../button/button.module';
 
 @NgModule({
   declarations: [HeaderComponent],
