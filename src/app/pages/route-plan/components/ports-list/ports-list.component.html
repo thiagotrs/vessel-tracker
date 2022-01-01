@@ -3,7 +3,9 @@
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">📍 {{ port.name }}</h5>
       <button
-        class="btn btn-outline-danger"
+        app-button
+        color="danger"
+        outline
         type="button"
         (click)="remove(idx)"
       >
