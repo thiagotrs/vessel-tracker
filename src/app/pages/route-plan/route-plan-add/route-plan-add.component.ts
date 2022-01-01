@@ -7,7 +7,7 @@ import { PortalService } from 'src/app/shared/services/portal.service';
 import { CanComponentDeactivate } from 'src/app/shared/services/auth.guard';
 import { PortService } from 'src/app/shared/services/port.service';
 import { VesselService } from 'src/app/shared/services/vessel.service';
-import { ConfirmModalComponent } from 'src/app/shared/components/modal/confirm-modal.component';
+import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-route-plan-add',

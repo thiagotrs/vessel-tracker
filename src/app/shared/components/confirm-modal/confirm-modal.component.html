@@ -1,15 +1,16 @@
-<app-modal (onClose)="denyAction()" [title]="title">
+<app-modal (closeModal)="denyAction()" [title]="title">
   <p modal-body>{{ message }}</p>
   <ng-container modal-footer>
     <button
       type="button"
       (click)="denyAction()"
-      class="btn btn-secondary"
+      app-button
+      color="secondary"
       data-bs-dismiss="modal"
     >
       {{ denyTitle }}
     </button>
-    <button type="button" (click)="confirmAction()" class="btn btn-primary">
+    <button type="button" (click)="confirmAction()" app-button color="primary">
       {{ confirmTitle }}
     </button>
   </ng-container>

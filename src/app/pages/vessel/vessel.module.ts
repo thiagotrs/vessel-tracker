@@ -10,7 +10,6 @@ import { HeroModule } from 'src/app/shared/components/hero/hero.module';
 import { FormsModule } from '@angular/forms';
 import { ListGroupModule } from 'src/app/shared/components/list-group/list-group.module';
 import { StopsListComponent } from './components/stops-list/stops-list.component';
-import { ModalModule } from 'src/app/shared/components/modal/modal.module';
 import { AuthGuard } from 'src/app/shared/services/auth.guard';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { BadgeModule } from 'src/app/shared/components/badge/badge.module';
@@ -18,6 +17,7 @@ import { DockButtonComponent } from './components/dock-button/dock-button.compon
 import { VesselsListModule } from 'src/app/shared/components/vessels-list/vessels-list.module';
 import { VesselHeroModule } from 'src/app/shared/components/vessel-hero/vessel-hero.module';
 import { SpinnerModule } from 'src/app/shared/components/spinner/spinner.module';
+import { ConfirmModalModule } from 'src/app/shared/components/confirm-modal/confirm-modal.module';
 
 const vesselRoutes: Routes = [
   {
@@ -60,7 +60,7 @@ const vesselRoutes: Routes = [
     BadgeModule,
     FormsModule,
     ListGroupModule,
-    ModalModule,
+    ConfirmModalModule,
     VesselsListModule,
     VesselHeroModule,
     SpinnerModule
